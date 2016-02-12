@@ -1,0 +1,23 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "MyNotes.Test Class Library",
+  "authors": [ "Sergey" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "dependencies": {
+    "Microsoft.AspNetCore.Hosting": "1.0.0-*",
+    "Microsoft.AspNetCore.TestHost": "1.0.0-*",
+    "MyNotes.Models": "1.0.0-*",
+    "MyNotes.Web": "1.0.0-*",
+    "xunit": "2.1.0",
+    "xunit.runner.dnx": "2.1.0-rc1-build204"
+  },
+  "commands": {
+    "test": "xunit.runner.dnx"
+  },
+  "frameworks": {
+    "dnx451": { },
+    "dnxcore50": { }
+  }
+}
