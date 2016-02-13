@@ -16,10 +16,19 @@ namespace MyNotes.Web.Controllers.Api.v1
         private readonly ILogger<NoteDaysController> _logger;
         private readonly INoteDaysService _service;
 
+        public NoteDaysController(
+            INoteDaysService service, 
+            ILogger<NoteDaysController> logger)
+        {
+            _service = service;
+            _logger = logger;
+        }
+
         // GET: api/values
         [HttpGet]
         public async Task<IEnumerable<NoteDay>> Get(string tenantId)
         {
+            _logger.LogInformation($"Geting all data");
             return await _service.GetAsync(tenantId);
         }
 

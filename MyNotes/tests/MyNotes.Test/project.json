@@ -6,9 +6,9 @@
   "projectUrl": "",
   "licenseUrl": "",
   "dependencies": {
-    "Microsoft.AspNetCore.Hosting": "1.0.0-*",
-    "Microsoft.AspNetCore.TestHost": "1.0.0-*",
-    "MyNotes.Models": "1.0.0-*",
+    "Microsoft.AspNetCore.Hosting": "1.0.0-rc1-final",
+    "Microsoft.AspNetCore.TestHost": "1.0.0-rc1-final",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0-rc1-final",
     "MyNotes.Web": "1.0.0-*",
     "xunit": "2.1.0",
     "xunit.runner.dnx": "2.1.0-rc1-build204"
