@@ -51,6 +51,11 @@ namespace MyNotes.Web.Services
         {
             try
             {
+                if (!noteDay.Notes.Any())
+                {
+                    throw new ArgumentException("No notes created");
+                }
+
                 var item = _noteDays.FirstOrDefault(l => l.Id == noteDay.Id);
                 if (item != null)
                 {

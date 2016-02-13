@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.TestHost;
+﻿using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyNotes.Web.Controllers.Api.v1;
+using MyNotes.Web.Models;
 using MyNotes.Web.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace MyNotes.Test
@@ -22,7 +21,6 @@ namespace MyNotes.Test
 
             services.AddLogging();
             services.AddSingleton<INoteDaysService, NoteDaysService>();
-            //services.AddInstance<IUserContextService>(new FakeUserContextService(Guid.NewGuid()));
 
             _serviceProvider = services.BuildServiceProvider();
         }
@@ -30,9 +28,7 @@ namespace MyNotes.Test
         [Fact]
         public async void get()
         {
-            var service = _serviceProvider.GetRequiredService<INoteDaysService>();
-            var logger = _serviceProvider.GetRequiredService<ILogger<NoteDaysController>>();
-            var controller = new NoteDaysController(service, logger);
+            var controller = GetNoteDaysController();
             var result = await controller.Get("test tenant");
             Assert.True(result != null);
         }
@@ -40,18 +36,54 @@ namespace MyNotes.Test
         [Fact]
         public async void post()
         {
-            var service = _serviceProvider.GetRequiredService<INoteDaysService>();
-            var logger = _serviceProvider.GetRequiredService<ILogger<NoteDaysController>>();
-            var controller = new NoteDaysController(service, logger);
+            var controller = GetNoteDaysController();
             var cnt = (await controller.Get("test tenant"))?.Count() ?? 0;
-            var result = await controller.Post(new Web.Models.NoteDay { CreatorId = null, Date = DateTime.Now, Id = cnt + 1, IsDeleted = false, TenantId = "testtenant" });
+            var result = await controller.Post(GetNewNoteDay());
             Assert.True(result != null);
+            Assert.True((result as CreatedResult) != null);
 
             cnt = (await controller.Get("test tenant"))?.Count() ?? 0;
             Assert.True(cnt == 0);
 
             cnt = (await controller.Get("testtenant"))?.Count() ?? 0;
             Assert.True(cnt == 1);
+        }
+
+        [Fact]
+        public async void delete()
+        {
+            var controller = GetNoteDaysController();
+            var result = await controller.Post(GetNewNoteDay());
+            Assert.True(result != null);
+            Assert.True((result as CreatedResult) != null);
+
+            result = await controller.Delete(1);
+            Assert.True(result != null);
+            Assert.True((result as HttpOkObjectResult) != null);
+            
+            var cnt = (await controller.Get("testtenant"))?.Count() ?? 0;
+            Assert.True(cnt == 0);
+        }
+
+        private NoteDaysController GetNoteDaysController()
+        {
+            var service = _serviceProvider.GetRequiredService<INoteDaysService>();
+            var logger = _serviceProvider.GetRequiredService<ILogger<NoteDaysController>>();
+            return new NoteDaysController(service, logger);
+        }
+
+        private NoteDay GetNewNoteDay()
+        {
+            return new NoteDay {
+                CreatorId = null,
+                Date = DateTime.Now,
+                Id = 0 + 1,
+                IsDeleted = false,
+                TenantId = "testtenant",
+                Notes = new List<Note> {
+                    new Note { Id = 0 }
+                }
+            };
         }
     }
 }

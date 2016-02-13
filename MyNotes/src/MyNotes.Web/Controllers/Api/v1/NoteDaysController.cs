@@ -36,6 +36,7 @@ namespace MyNotes.Web.Controllers.Api.v1
         [HttpGet("{id}")]
         public async Task<NoteDay> Get(int id)
         {
+            _logger.LogInformation($"Geting item");
             return await _service.GetByIdAsync(id);
         }
 
@@ -45,9 +46,10 @@ namespace MyNotes.Web.Controllers.Api.v1
         {
             _logger.LogInformation($"Beginning POST: {noteDay.Date}");
             if (!ModelState.IsValid)
-            {                
+            {
                 return HttpBadRequest(ModelState);
             }
+
             _logger.LogInformation("Posting new Habit with name {habitName}", noteDay.Date);
             var result = await _service.SaveAsync(noteDay);
             if (result.Succeeded)
