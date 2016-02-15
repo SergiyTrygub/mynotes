@@ -9,7 +9,9 @@ namespace MyNotes.Web.Models
     {
         public string Id { get; set; }
 
-        public string Name { get; set; }
+        public string DisplayName { get; set; }
+
+        public bool IsPrivate { get; set; }
 
         public bool IsDeleted { get; set; }
     }

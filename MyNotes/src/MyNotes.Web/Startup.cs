@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using MyNotes.Web.Services;
 using Microsoft.Extensions.Logging;
+using MyNotes.Web.Infrastructure.Tenants;
 
 namespace MyNotes.Web
 {
@@ -66,11 +67,16 @@ namespace MyNotes.Web
 
             app.UseStaticFiles();
 
+            app.UseTenantMiddleware();
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "tanent_default",
+                    template: "{tenant}/{controller=Home}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
