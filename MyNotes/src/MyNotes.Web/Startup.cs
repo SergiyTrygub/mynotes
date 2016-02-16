@@ -38,6 +38,10 @@ namespace MyNotes.Web
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            var tenantResolverBuilder = new TenantResolverBuilder()
+                .AddResolver<UrlTenantResolver>()
+                .AddResolver<IpAddrTenantResolver>();
+
             services.AddMvc();
             services.AddSingleton<INoteDaysService, NoteDaysService>();
             services.AddInstance<IUserContextService>(new FakeUserContextService(Guid.NewGuid()));
