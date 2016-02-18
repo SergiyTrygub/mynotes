@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
-using MyNotes.Web.Models;
 using Microsoft.Extensions.Logging;
+using MyNotes.Web.MultiTenancy;
+using MyNotes.Web.MultiTenancy.Resolvers;
 
 namespace MyNotes.Web.Infrastructure.Tenants
 {
@@ -18,22 +16,32 @@ namespace MyNotes.Web.Infrastructure.Tenants
         public TenantMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
         {
             _next = next;
+            _logger = loggerFactory.CreateLogger<TenantMiddleware>();
         }
 
-        public Task Invoke(HttpContext httpContext)
+        public async Task Invoke(HttpContext httpContext)
         {
             using (_logger.BeginScope("TenantResolverMiddleware"))
             {
-                httpContext.Features[typeof(TenantInfo)] = new TenantInfo();
+                var tenant = httpContext.GetTenant();
+                if (tenant == null)
+                {
+                    var service = httpContext.RequestServices.GetService(typeof(ITenantResolver)) as ITenantResolver;
+                    tenant = await service.ResolveAsync(httpContext);
+                    if (tenant != null)
+                    {
+                        httpContext.SetTenant(tenant);
+                    }
+                }
             }
-            return _next(httpContext);
+            await _next(httpContext);
         }
     }
 
     // Extension method used to add the middleware to the HTTP request pipeline.
     public static class TenantMiddlewareExtensions
     {
-        public static IApplicationBuilder UseTenantMiddleware(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseMultiTenancy(this IApplicationBuilder builder)
         {
             return builder.UseMiddleware<TenantMiddleware>();
         }

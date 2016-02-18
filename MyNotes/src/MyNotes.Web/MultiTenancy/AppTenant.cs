@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MyNotes.Web.Models
+﻿namespace MyNotes.Web.MultiTenancy
 {
-    public class TenantInfo
+    public class AppTenant
     {
         public string Id { get; set; }
 
         public string DisplayName { get; set; }
+
+        public string IpAddress { get; set; }
 
         public bool IsPrivate { get; set; }
 

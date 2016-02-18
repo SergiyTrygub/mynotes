@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using MyNotes.Web.Services;
 using Microsoft.Extensions.Logging;
 using MyNotes.Web.Infrastructure.Tenants;
+using MyNotes.Web.MultiTenancy;
+using MyNotes.Web.MultiTenancy.Resolvers;
 
 namespace MyNotes.Web
 {
@@ -38,9 +36,9 @@ namespace MyNotes.Web
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            var tenantResolverBuilder = new TenantResolverBuilder()
-                .AddResolver<UrlTenantResolver>()
-                .AddResolver<IpAddrTenantResolver>();
+            services.AddLogging();
+
+            services.AddMultitenancy<UrlTenantResolver>();
 
             services.AddMvc();
             services.AddSingleton<INoteDaysService, NoteDaysService>();
@@ -71,7 +69,7 @@ namespace MyNotes.Web
 
             app.UseStaticFiles();
 
-            app.UseTenantMiddleware();
+            app.UseMultiTenancy();
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
 
