@@ -6,8 +6,8 @@
   "projectUrl": "",
   "licenseUrl": "",
   "dependencies": {
-    "Microsoft.AspNetCore.Hosting": "1.0.0-rc1-final",
-    "Microsoft.AspNetCore.TestHost": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Hosting": "1.0.0-rc1-final",
+    "Microsoft.AspNet.TestHost": "1.0.0-rc1-final",
     "Microsoft.Extensions.Configuration.Json": "1.0.0-rc1-final",
     "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
     "MyNotes.Web": "1.0.0-*",
