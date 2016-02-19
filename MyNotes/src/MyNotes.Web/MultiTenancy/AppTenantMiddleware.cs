@@ -2,21 +2,18 @@
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Logging;
-using MyNotes.Web.MultiTenancy;
-using MyNotes.Web.MultiTenancy.Resolvers;
 
-namespace MyNotes.Web.Infrastructure.Tenants
+namespace MyNotes.Web.MultiTenancy
 {
-    // You may need to install the Microsoft.AspNet.Http.Abstractions package into your project
-    public class TenantMiddleware
+    public class AppTenantMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
 
-        public TenantMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        public AppTenantMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
         {
             _next = next;
-            _logger = loggerFactory.CreateLogger<TenantMiddleware>();
+            _logger = loggerFactory.CreateLogger<AppTenantMiddleware>();
         }
 
         public async Task Invoke(HttpContext httpContext)
@@ -26,7 +23,7 @@ namespace MyNotes.Web.Infrastructure.Tenants
                 var tenant = httpContext.GetTenant();
                 if (tenant == null)
                 {
-                    var service = httpContext.RequestServices.GetService(typeof(ITenantResolver)) as ITenantResolver;
+                    var service = httpContext.RequestServices.GetService(typeof(IMultiTenancyResolver)) as IMultiTenancyResolver;
                     tenant = await service.ResolveAsync(httpContext);
                     if (tenant != null)
                     {
@@ -43,7 +40,7 @@ namespace MyNotes.Web.Infrastructure.Tenants
     {
         public static IApplicationBuilder UseMultiTenancy(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<TenantMiddleware>();
+            return builder.UseMiddleware<AppTenantMiddleware>();
         }
     }
 }

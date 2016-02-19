@@ -5,9 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using MyNotes.Web.Services;
 using Microsoft.Extensions.Logging;
-using MyNotes.Web.Infrastructure.Tenants;
 using MyNotes.Web.MultiTenancy;
 using MyNotes.Web.MultiTenancy.Resolvers;
+using MyNotes.Web.MultiTenancy.Sources;
 
 namespace MyNotes.Web
 {
@@ -38,7 +38,10 @@ namespace MyNotes.Web
         {
             services.AddLogging();
 
-            services.AddMultitenancy<UrlTenantResolver>();
+            services.AddMultitenancy<MultiTenancyResolver>().Configure<MultiTenancyOptions>(opt =>
+            {
+                opt.Resolvers.Add(new UrlTenantResolver() { TenantsSources = new[] { new MemoryTenantsSource() } });
+            });
 
             services.AddMvc();
             services.AddSingleton<INoteDaysService, NoteDaysService>();
