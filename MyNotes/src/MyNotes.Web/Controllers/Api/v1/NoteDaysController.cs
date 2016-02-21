@@ -9,7 +9,7 @@ using MyNotes.Web.Models;
 
 namespace MyNotes.Web.Controllers.Api.v1
 {
-    [Route("api/[controller]")]
+    [Route("1/api/[controller]")]
     public class NoteDaysController : Controller
     {
         private readonly IUserContextService _userContextService;

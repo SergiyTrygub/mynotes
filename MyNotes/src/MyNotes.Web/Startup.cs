@@ -44,7 +44,8 @@ namespace MyNotes.Web
             });
 
             services.AddMvc();
-            services.AddSingleton<INoteDaysService, NoteDaysService>();
+            services.AddTransient<IDbContextUnitOfWork, CollectionContext>();
+            services.AddTransient<INoteDaysService, NoteDaysService>();
             services.AddInstance<IUserContextService>(new FakeUserContextService(Guid.NewGuid()));
 
         }

@@ -1,4 +1,5 @@
-﻿using MyNotes.Web.Infrastructure;
+﻿using Microsoft.Data.Entity;
+using MyNotes.Web.Infrastructure;
 using MyNotes.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -18,16 +19,21 @@ namespace MyNotes.Web.Services
 
     public class NoteDaysService : INoteDaysService
     {
-        private List<NoteDay> _noteDays = new List<NoteDay>();
+        IDbContextUnitOfWork _dbContext;
+        public NoteDaysService(IDbContextUnitOfWork dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
         public async Task<ActionResult> DeleteAsync(int id)
         {
             try
             {
-                var item = _noteDays.FirstOrDefault(l => l.Id == id);
+                var item = await _dbContext.NoteDaysRepository.Query(n => n.Id == id).FirstOrDefaultAsync();
                 if (item != null)
                 {
-                    _noteDays.Remove(item);
+                    _dbContext.NoteDaysRepository.Delete(item);
+                    await _dbContext.SaveChangesAsync();
                 }
                 return ActionResult.Success();
             }
@@ -56,12 +62,13 @@ namespace MyNotes.Web.Services
                     throw new ArgumentException("No notes created");
                 }
 
-                var item = _noteDays.FirstOrDefault(l => l.Id == noteDay.Id);
+                var item = _dbContext.NoteDaysRepository.Query(l => l.Id == noteDay.Id).FirstOrDefault();
                 if (item != null)
                 {
-                    _noteDays.Remove(item);
+                    _dbContext.NoteDaysRepository.Delete(item);
                 }
-                _noteDays.Add(noteDay);
+                _dbContext.NoteDaysRepository.Insert(noteDay);
+                await _dbContext.SaveChangesAsync();
 
                 return ActionResult.Success();
             }
@@ -73,7 +80,7 @@ namespace MyNotes.Web.Services
 
         private IEnumerable<NoteDay> Query()
         {
-            return _noteDays.Where(n => !n.IsDeleted);
+            return _dbContext.NoteDaysRepository.Query(n => !n.IsDeleted);
         }
     }
 }

@@ -20,7 +20,8 @@ namespace MyNotes.Test
             var services = new ServiceCollection();
 
             services.AddLogging();
-            services.AddSingleton<INoteDaysService, NoteDaysService>();
+            services.AddTransient<IDbContextUnitOfWork, CollectionContext>();
+            services.AddTransient<INoteDaysService, NoteDaysService>();
 
             _serviceProvider = services.BuildServiceProvider();
         }

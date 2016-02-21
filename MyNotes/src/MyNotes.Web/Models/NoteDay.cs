@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyNotes.Web.Models
 {
-    public class NoteDay
+    public class NoteDay : IEntity<int>
     {
         public int Id { get; set; }
 

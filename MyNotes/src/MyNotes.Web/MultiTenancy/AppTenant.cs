@@ -1,6 +1,8 @@
-﻿namespace MyNotes.Web.MultiTenancy
+﻿using MyNotes.Web.Models;
+
+namespace MyNotes.Web.MultiTenancy
 {
-    public class AppTenant
+    public class AppTenant : IEntity<string>
     {
         public string Id { get; set; }
 
