@@ -29,6 +29,11 @@ namespace MyNotes.Web.MultiTenancy
                     {
                         httpContext.SetTenant(tenant);
                     }
+                    else
+                    {
+                        httpContext.Response.StatusCode = 404;
+                        return;
+                    }
                 }
             }
             await _next(httpContext);
