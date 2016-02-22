@@ -18,11 +18,16 @@ namespace MyNotes.Web.Services
 
     public class CollectionContext : IDbContextUnitOfWork
     {
+        private Repository<NoteDay, int> _noteDaysRepository;
         public IRepository<NoteDay> NoteDaysRepository
         {
             get
             {
-                return new Repository<NoteDay, int>();
+                if (_noteDaysRepository == null)
+                {
+                    _noteDaysRepository = new Repository<NoteDay, int>();
+                }
+                return _noteDaysRepository;
             }
         }
 

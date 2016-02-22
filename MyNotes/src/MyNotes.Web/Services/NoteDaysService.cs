@@ -29,7 +29,7 @@ namespace MyNotes.Web.Services
         {
             try
             {
-                var item = await _dbContext.NoteDaysRepository.Query(n => n.Id == id).FirstOrDefaultAsync();
+                var item = _dbContext.NoteDaysRepository.Query(n => n.Id == id).FirstOrDefault();
                 if (item != null)
                 {
                     _dbContext.NoteDaysRepository.Delete(item);
