@@ -81,7 +81,7 @@ namespace MyNotes.Web
             {
                 routes.MapRoute(
                     name: "tanent_default",
-                    template: "{tenant}/{controller=Home}/{action=Index}/{id?}");
+                    template: "{tenant}/{controller=Notes}/{action=Index}/{id?}");
 
                 routes.MapRoute(
                     name: "default",
