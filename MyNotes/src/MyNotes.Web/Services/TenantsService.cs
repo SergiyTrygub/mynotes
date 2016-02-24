@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using MyNotes.Web.Infrastructure;
 using MyNotes.Web.MultiTenancy;
 using System;
 using System.Collections.Generic;
@@ -17,9 +17,27 @@ namespace MyNotes.Web.Services
 
     public class TenantsService : ITenantsService
     {
-        public Task<ActionResult> CreateAsync()
+        private readonly IDbContextUnitOfWork _dbContext;
+
+        public TenantsService(IDbContextUnitOfWork dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
+        }
+
+        public async Task<ActionResult> CreateAsync()
+        {
+            try
+            {
+                AppTenant tenant = new AppTenant { Id = Guid.NewGuid().ToString() };
+                _dbContext.TenantsRepository.Insert(tenant);
+                await _dbContext.SaveChangesAsync();
+
+                return ActionResult.Success(tenant);
+            }
+            catch(Exception ex)
+            {
+                return ActionResult.Failed(ex);
+            }
         }
 
         public Task<ActionResult> DeleteAsync(string Id)

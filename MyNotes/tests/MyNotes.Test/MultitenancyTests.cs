@@ -16,6 +16,15 @@ namespace MyNotes.Test
     public class MultitenancyTests
     {
         [Fact]
+        public async Task root_url_should_give_200_response()
+        {
+            var server = CreateServer(baseAddress: new Uri("http://localhost:5000/"));
+            var client = server.CreateClient();
+            var result = await client.SendAsync(new HttpRequestMessage(HttpMethod.Get, "/"));
+            Assert.Equal(System.Net.HttpStatusCode.OK, result.StatusCode);
+        }
+
+        [Fact]
         public async Task Should_give_200_Response()
         {
             var server = CreateServer(baseAddress: new Uri("http://localhost:5000/"));
@@ -43,10 +52,9 @@ namespace MyNotes.Test
                     var req = context.Request;
                     var res = context.Response;
                     var tenant = context.GetTenant();
-                    if (tenant != null)
+                    if (req.Path == new PathString("/") || tenant != null)
                     {
-                        res.StatusCode = 200;
-                        
+                        res.StatusCode = 200;                        
                     }
                     else
                     {

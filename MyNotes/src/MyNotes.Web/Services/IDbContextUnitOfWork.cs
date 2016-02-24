@@ -31,11 +31,16 @@ namespace MyNotes.Web.Services
             }
         }
 
+        private Repository<AppTenant, string> _tenantRepository;
         public IRepository<AppTenant> TenantsRepository
         {
             get
             {
-                return new Repository<AppTenant, string>();
+                if (_tenantRepository == null)
+                {
+                    _tenantRepository = new Repository<AppTenant, string>();
+                }
+                return _tenantRepository;
             }
         }
 

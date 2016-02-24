@@ -45,6 +45,7 @@ namespace MyNotes.Web
 
             services.AddMvc();
             services.AddTransient<IDbContextUnitOfWork, CollectionContext>();
+            services.AddTransient<ITenantsService, TenantsService>();
             services.AddTransient<INoteDaysService, NoteDaysService>();
             services.AddInstance<IUserContextService>(new FakeUserContextService(Guid.NewGuid()));
 

@@ -9,10 +9,12 @@ namespace MyNotes.Web.MultiTenancy
     {
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
+        private readonly IMultiTenancyResolver _tenantResolver;
 
-        public AppTenantMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        public AppTenantMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, IMultiTenancyResolver tenantResolver)
         {
             _next = next;
+            _tenantResolver = tenantResolver;
             _logger = loggerFactory.CreateLogger<AppTenantMiddleware>();
         }
 
@@ -20,19 +22,22 @@ namespace MyNotes.Web.MultiTenancy
         {
             using (_logger.BeginScope("TenantResolverMiddleware"))
             {
-                var tenant = httpContext.GetTenant();
-                if (tenant == null)
+                _logger.LogInformation("Starting to get the tenant");
+                if (httpContext.Request.Path != new PathString("/"))
                 {
-                    var service = httpContext.RequestServices.GetService(typeof(IMultiTenancyResolver)) as IMultiTenancyResolver;
-                    tenant = await service.ResolveAsync(httpContext);
-                    if (tenant != null)
+                    var tenant = httpContext.GetTenant();
+                    if (tenant == null)
                     {
-                        httpContext.SetTenant(tenant);
-                    }
-                    else
-                    {
-                        httpContext.Response.StatusCode = 404;
-                        return;
+                        tenant = await _tenantResolver.ResolveAsync(httpContext);
+                        if (tenant != null)
+                        {
+                            httpContext.SetTenant(tenant);
+                        }
+                        else
+                        {
+                            //httpContext.Response.StatusCode = 404;
+                            //return;
+                        }
                     }
                 }
             }
