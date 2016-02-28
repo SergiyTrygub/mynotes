@@ -32,4 +32,4 @@ System.register(['angular2/core'], function(exports_1) {
         }
     }
 });
-//# sourceMappingURL=app.js.map
+//# sourceMappingURL=app.component.js.map
