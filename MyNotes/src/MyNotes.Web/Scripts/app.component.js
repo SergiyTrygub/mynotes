@@ -18,10 +18,17 @@ System.register(['angular2/core'], function(exports_1) {
         execute: function() {
             AppComponent = (function () {
                 function AppComponent() {
+                    this.currentDate = new Date();
+                    this.newItem = 'test';
                 }
+                AppComponent.prototype.addItem = function () {
+                    console.log('Add clicked', this.newItem);
+                    //this.store.dispatch(addItem(this.newItem));
+                    //this.newItem = '';
+                };
                 AppComponent = __decorate([
                     core_1.Component({
-                        selector: 'my-app',
+                        selector: 'wish-list',
                         templateUrl: 'views/mywishday.html'
                     }), 
                     __metadata('design:paramtypes', [])

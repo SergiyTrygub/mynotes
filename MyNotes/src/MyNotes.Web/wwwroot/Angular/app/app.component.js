@@ -21,7 +21,7 @@ System.register(['angular2/core'], function(exports_1) {
                 }
                 AppComponent = __decorate([
                     core_1.Component({
-                        selector: 'my-app',
+                        selector: 'wish-list',
                         templateUrl: 'views/mywishday.html'
                     }), 
                     __metadata('design:paramtypes', [])
