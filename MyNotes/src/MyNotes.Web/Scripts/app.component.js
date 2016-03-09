@@ -9,20 +9,29 @@ System.register(['angular2/core'], function(exports_1) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1;
-    var AppComponent;
+    var WishItems, AppComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             }],
         execute: function() {
+            WishItems = [
+                { id: 1, position: 1, text: 'test 1' },
+                { id: 2, position: 2, text: 'test 2' }
+            ];
             AppComponent = (function () {
                 function AppComponent() {
                     this.currentDate = new Date();
-                    this.newItem = 'test';
+                    this.newItem = {
+                        id: 0,
+                        position: 0,
+                        text: 'test'
+                    };
+                    this.wishItems = WishItems;
                 }
                 AppComponent.prototype.addItem = function () {
-                    console.log('Add clicked', this.newItem);
+                    console.log('Add clicked', this.wishItems);
                     //this.store.dispatch(addItem(this.newItem));
                     //this.newItem = '';
                 };

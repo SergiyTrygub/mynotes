@@ -2,16 +2,17 @@
     <header>
         <h1>{{currentDate}}</h1>
         <input class="new-todo" placeholder="What needs to be done?" autofocus
-               [(ngModel)]="newItem" (keyup.enter)="addItem()">
+               [(ngModel)]="newItem.text" (keyup.enter)="addItem()">
         <button class="add" (click)="addItem()">Add</button>
     </header>
-    <!--<section class="main">
+    <section class="main">
         <ul class="todo-list">
-            <todo-item *ngFor="#item of store.items"
+            <li *ngFor="#item of wishItems">{{item.text}}</li>
+            <!--<todo-item *ngFor="#item of WishItems"
                        [item]="item"
                        (done)="removeItem($event)"
                        (itemUpdated)="itemUpdated($event)">
-            </todo-item>
+            </todo-item>-->
         </ul>
-    </section>-->
+    </section>
 </section>
