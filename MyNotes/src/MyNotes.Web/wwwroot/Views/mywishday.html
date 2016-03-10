@@ -7,7 +7,8 @@
     </header>
     <section class="main">
         <ul class="todo-list">
-            <li *ngFor="#item of wishItems">{{item.text}}</li>
+            <wish-item *ngFor="#item of wishItems" [item]="item">
+            </wish-item>
             <!--<todo-item *ngFor="#item of WishItems"
                        [item]="item"
                        (done)="removeItem($event)"

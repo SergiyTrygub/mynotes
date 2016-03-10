@@ -20,12 +20,12 @@ gulp.task("angular2:moveLibs", function () {
             "node_modules/rxjs/bundles/Rx.js",
             "node_modules/angular2/bundles/angular2.dev.js"
     ])
-        .pipe(gulp.dest(paths.webroot + "Angular"));
+        .pipe(gulp.dest(paths.webroot + "lib"));
 });
 
 gulp.task("angular2:moveJs", function () {
     return gulp.src(["Scripts/**/*.js", "Scripts/*.js"])
-        .pipe(gulp.dest(paths.webroot + "Angular/app/"));
+        .pipe(gulp.dest(paths.webroot + "app/"));
 
 });
 

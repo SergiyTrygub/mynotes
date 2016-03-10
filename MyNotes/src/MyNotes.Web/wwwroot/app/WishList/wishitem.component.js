@@ -9,27 +9,32 @@ System.register(['angular2/core'], function(exports_1) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1;
-    var AppComponent;
+    var WishItemComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             }],
         execute: function() {
-            AppComponent = (function () {
-                function AppComponent() {
+            WishItemComponent = (function () {
+                function WishItemComponent() {
                 }
-                AppComponent = __decorate([
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', Object)
+                ], WishItemComponent.prototype, "item", void 0);
+                WishItemComponent = __decorate([
                     core_1.Component({
-                        selector: 'wish-list',
-                        template: '<h1>My First Angular 2 App</h1>'
+                        selector: 'wish-item',
+                        templateUrl: 'app/wishlist/wishitem.component.html',
+                        styleUrls: ['app/wishlist/wishitem.component.css'],
                     }), 
                     __metadata('design:paramtypes', [])
-                ], AppComponent);
-                return AppComponent;
+                ], WishItemComponent);
+                return WishItemComponent;
             })();
-            exports_1("AppComponent", AppComponent);
+            exports_1("WishItemComponent", WishItemComponent);
         }
     }
 });
-//# sourceMappingURL=app.js.map
+//# sourceMappingURL=wishitem.component.js.map
