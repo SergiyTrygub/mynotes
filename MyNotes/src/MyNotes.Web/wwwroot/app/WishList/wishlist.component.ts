@@ -1,12 +1,8 @@
 ﻿import {Component, Input} from 'angular2/core';
+import {OnInit} from 'angular2/core';
 import {WishItem} from './../wishlist/wishitem';
 import {WishItemComponent} from './../wishlist/wishitem.component'
-
-var WishItems: WishItem[] = [
-    { id: 1, position: 1, text: 'test 1' },
-    { id: 2, position: 2, text: 'test 2' },
-    { id: 3, position: 3, text: 'test 3' },
-];
+import {WishItemsService} from './../services/wishitems.service';
 
 @Component({
     selector: 'wish-list',
@@ -14,16 +10,25 @@ var WishItems: WishItem[] = [
     styleUrls: ['app/wishlist/wishlist.component.css'],
     directives: [WishItemComponent]
 })
-export class WishListComponent {
+export class WishListComponent implements OnInit {
+    constructor(private _wishItemsService: WishItemsService) { }
+
     public currentDate = new Date();
 
+    public wishItems: WishItem[];
     public newItem: WishItem = {
         id: 0,
         position: 0,
         text: 'test'
     };
 
-    public wishItems = WishItems;
+    getwishItems() {
+        this._wishItemsService.getItems().then(items => this.wishItems = items);
+    }
+    
+    ngOnInit() {
+        this.getwishItems();
+    }
 
     addItem() {
         console.log('Add clicked', this.wishItems);
