@@ -39,7 +39,7 @@ namespace MyNotes.Test
         {
             var controller = GetNoteDaysController();
             var cnt = (await controller.Get("test tenant"))?.Count() ?? 0;
-            var result = await controller.Post(GetNewNoteDay());
+            var result = await controller.Post("testtenant", GetNewNoteDay());
             Assert.True(result != null);
             Assert.True((result as CreatedResult) != null);
 
@@ -54,7 +54,7 @@ namespace MyNotes.Test
         public async void delete()
         {
             var controller = GetNoteDaysController();
-            var result = await controller.Post(GetNewNoteDay());
+            var result = await controller.Post("test tenant", GetNewNoteDay());
             Assert.True(result != null);
             Assert.True((result as CreatedResult) != null);
 
@@ -73,16 +73,16 @@ namespace MyNotes.Test
             return new NoteDaysController(service, logger);
         }
 
-        private NoteDay GetNewNoteDay()
+        private WishDay GetNewNoteDay()
         {
-            return new NoteDay {
+            return new WishDay {
                 CreatorId = null,
                 Date = DateTime.Now,
                 Id = 0 + 1,
                 IsDeleted = false,
                 TenantId = "testtenant",
-                Notes = new List<Note> {
-                    new Note { Id = 0 }
+                WishList = new List<WishItem> {
+                    new WishItem { Id = 0 }
                 }
             };
         }

@@ -1,13 +1,17 @@
 ﻿<section>
-    <header>
-        <h1>{{currentDate}}</h1>
+    {{errorMessage}}
+    <header *ngIf="!currentWishDay">
+        <button (click)="createNewDay()">Create new day</button>
+    </header>
+    <header *ngIf="currentWishDay">
+        <h1 >{{currentWishDay.date}}</h1>
         <input class="new-todo" placeholder="What needs to be done?" autofocus
                [(ngModel)]="newItem.text" (keyup.enter)="addItem()">
         <button class="add" (click)="addItem()">Add</button>
     </header>
-    <section class="main">
+    <section class="main" *ngIf="currentWishDay">
         <ul class="todo-list">
-            <wish-item *ngFor="#item of wishItems" [item]="item">
+            <wish-item *ngFor="#item of currentWishDay.wishList" [item]="item">
             </wish-item>
             <!--<todo-item *ngFor="#item of WishItems"
                        [item]="item"

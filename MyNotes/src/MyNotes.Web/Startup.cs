@@ -8,6 +8,9 @@ using Microsoft.Extensions.Logging;
 using MyNotes.Web.MultiTenancy;
 using MyNotes.Web.MultiTenancy.Resolvers;
 using MyNotes.Web.MultiTenancy.Sources;
+using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Formatters;
+using Newtonsoft.Json.Serialization;
 
 namespace MyNotes.Web
 {
@@ -43,7 +46,13 @@ namespace MyNotes.Web
                 opt.Resolvers.Add(new UrlTenantResolver() { TenantsSources = new[] { new MemoryTenantsSource() } });
             });
 
-            services.AddMvc();
+            services.AddMvc(options => {
+                var formatter = new JsonOutputFormatter
+                {
+                    SerializerSettings = { ContractResolver = new CamelCasePropertyNamesContractResolver() }
+                };
+                options.OutputFormatters.Insert(0, formatter);
+            });
             services.AddTransient<IDbContextUnitOfWork, CollectionContext>();
             services.AddTransient<ITenantsService, TenantsService>();
             services.AddTransient<INoteDaysService, NoteDaysService>();

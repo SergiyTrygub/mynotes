@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace MyNotes.Web.Models
 {
-    public class Note
+    public class WishItem
     {
         public int Id { get; set; }
 
-        public int NoteDayId { get; set; }
+        public int WishDayId { get; set; }
 
         public string Text { get; set; }
 

@@ -4,12 +4,13 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
 using MyNotes.Web.Services;
 using MyNotes.Web.Models;
+using System;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace MyNotes.Web.Controllers.Api.v1
 {
-    [Route("1/api/[controller]")]
+    [Route("api/[controller]/{tenantId}")]
     public class NoteDaysController : Controller
     {
         private readonly IUserContextService _userContextService;
@@ -26,32 +27,32 @@ namespace MyNotes.Web.Controllers.Api.v1
 
         // GET: api/values
         [HttpGet]
-        public async Task<IEnumerable<NoteDay>> Get(string tenantId)
+        public async Task<IEnumerable<WishDay>> Get(string tenantId)
         {
             _logger.LogInformation($"Geting all data");
             return await _service.GetAsync(tenantId);
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public async Task<NoteDay> Get(int id)
+        [HttpGet("{date}")]
+        public async Task<WishDay> Get(string tenantId, DateTime date)
         {
             _logger.LogInformation($"Geting item");
-            return await _service.GetByIdAsync(id);
+            return await _service.GetWishDayAsync(tenantId, date);
         }
 
         // POST api/values
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]NoteDay noteDay)
+        public async Task<IActionResult> Post(string tenantId, [FromBody]WishDay wishDay)
         {
-            _logger.LogInformation($"Beginning POST: {noteDay.Date}");
+            _logger.LogInformation($"Beginning POST: {wishDay.Date}");
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
             }
 
-            _logger.LogInformation("Posting new Habit with name {habitName}", noteDay.Date);
-            var result = await _service.SaveAsync(noteDay);
+            _logger.LogInformation("Posting new Habit with name {habitName}", wishDay.Date);
+            var result = await _service.SaveAsync(tenantId, wishDay);
             if (result.Succeeded)
             {
                 return Created("/", result);
@@ -60,8 +61,8 @@ namespace MyNotes.Web.Controllers.Api.v1
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]NoteDay noteDay)
+        [HttpPut("{date}")]
+        public async Task<IActionResult> Put(string tenantId, DateTime date, [FromBody]WishDay noteDay)
         {
             _logger.LogInformation($"Beginning POST: {noteDay.Date}");
             if (!ModelState.IsValid)
@@ -69,7 +70,7 @@ namespace MyNotes.Web.Controllers.Api.v1
                 return HttpBadRequest(ModelState);
             }
             _logger.LogInformation("Posting new Habit with name {habitName}", noteDay.Date);
-            var result = await _service.SaveAsync(noteDay);
+            var result = await _service.SaveAsync(tenantId, noteDay);
             if (result.Succeeded)
             {
                 return Ok(result);

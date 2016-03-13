@@ -25,22 +25,43 @@ System.register(['angular2/core', './../wishlist/wishitem.component', './../serv
             WishListComponent = (function () {
                 function WishListComponent(_wishItemsService) {
                     this._wishItemsService = _wishItemsService;
-                    this.currentDate = new Date();
+                    //public wishItems: WishItem[];
                     this.newItem = {
                         id: 0,
                         position: 0,
-                        text: 'test'
+                        text: ''
                     };
                 }
                 WishListComponent.prototype.getwishItems = function () {
                     var _this = this;
-                    this._wishItemsService.getItems().then(function (items) { return _this.wishItems = items; });
+                    var tenantId = window.location.pathname;
+                    this._wishItemsService.getItems(tenantId)
+                        .subscribe(function (items) { return _this.currentWishDay.wishList = items; });
+                };
+                WishListComponent.prototype.createNewDay = function () {
+                    var _this = this;
+                    var tenantId = window.location.pathname;
+                    this._wishItemsService.createNewDay(tenantId)
+                        .subscribe(function (day) {
+                        _this.currentWishDay = day;
+                        _this.currentWishDay.wishList = [];
+                    }, function (error) { return _this.errorMessage = error; });
                 };
                 WishListComponent.prototype.ngOnInit = function () {
-                    this.getwishItems();
+                    //this.getwishItems();
                 };
                 WishListComponent.prototype.addItem = function () {
-                    console.log('Add clicked', this.wishItems);
+                    console.log('Add clicked', this.newItem);
+                    if (this.currentWishDay) {
+                        this.currentWishDay.wishList.push({
+                            text: this.newItem.text,
+                            position: this.currentWishDay.wishList.length,
+                            id: 0
+                        });
+                        var tenantId = window.location.pathname;
+                        this._wishItemsService.saveWishDay(tenantId, this.currentWishDay);
+                        this.newItem.text = "";
+                    }
                     //this.store.dispatch(addItem(this.newItem));
                     //this.newItem = '';
                 };

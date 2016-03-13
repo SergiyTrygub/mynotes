@@ -25,7 +25,7 @@ System.register(['angular2/core', './wishlist/wishlist.component'], function(exp
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'wish-day',
-                        template: '<wish-list></wish-list>',
+                        templateUrl: '/views/mywishday.html',
                         directives: [wishlist_component_1.WishListComponent]
                     }), 
                     __metadata('design:paramtypes', [])

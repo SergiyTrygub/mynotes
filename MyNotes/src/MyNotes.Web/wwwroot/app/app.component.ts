@@ -3,9 +3,8 @@ import {WishListComponent} from './wishlist/wishlist.component'
 
 @Component({
     selector: 'wish-day',
-    template: '<wish-list></wish-list>',
+    templateUrl: '/views/mywishday.html',
     directives: [WishListComponent]
 })
 export class AppComponent {
-    
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyNotes.Web.Models
 {
-    public class NoteDay : IEntity<int>
+    public class WishDay : IEntity<int>
     {
         public int Id { get; set; }
 
@@ -20,8 +20,8 @@ namespace MyNotes.Web.Models
 
         public bool IsDeleted { get; set; }
 
-        [Required]
-        [Range(1, 10000)]
-        public IEnumerable<Note> Notes { get; set; }
+        //[Required]
+        //[Range(1, 10000)]
+        public IEnumerable<WishItem> WishList { get; set; }
     }
 }

@@ -10,10 +10,10 @@ namespace MyNotes.Web.Services
 {
     public interface INoteDaysService
     {
-        Task<IEnumerable<NoteDay>> GetAsync(string tenantId);
-        Task<NoteDay> GetByIdAsync(int id);
+        Task<IEnumerable<WishDay>> GetAsync(string tenantId);
+        Task<WishDay> GetWishDayAsync(string tenantId, DateTime date);
 
-        Task<ActionResult> SaveAsync(NoteDay noteDay);
+        Task<ActionResult> SaveAsync(string tenantId, WishDay noteDay);
         Task<ActionResult> DeleteAsync(int id);
     }
 
@@ -43,34 +43,30 @@ namespace MyNotes.Web.Services
             }
         }
 
-        public async Task<IEnumerable<NoteDay>> GetAsync(string tenantId)
+        public async Task<IEnumerable<WishDay>> GetAsync(string tenantId)
         {
             return Query().Where(n => n.TenantId == tenantId);
         }
 
-        public async Task<NoteDay> GetByIdAsync(int id)
+        public async Task<WishDay> GetWishDayAsync(string tenantId, DateTime date)
         {
-            return Query().FirstOrDefault(n => n.Id == id);
+            return Query().FirstOrDefault(n => n.Date == date);
         }
 
-        public async Task<ActionResult> SaveAsync(NoteDay noteDay)
+        public async Task<ActionResult> SaveAsync(string tenantId, WishDay wishDay)
         {
             try
             {
-                if (!noteDay.Notes.Any())
-                {
-                    throw new ArgumentException("No notes created");
-                }
-
-                var item = _dbContext.NoteDaysRepository.Query(l => l.Id == noteDay.Id).FirstOrDefault();
+                wishDay.TenantId = tenantId;
+                var item = _dbContext.NoteDaysRepository.Query(l => l.Id == wishDay.Id).FirstOrDefault();
                 if (item != null)
                 {
                     _dbContext.NoteDaysRepository.Delete(item);
                 }
-                _dbContext.NoteDaysRepository.Insert(noteDay);
+                _dbContext.NoteDaysRepository.Insert(wishDay);
                 await _dbContext.SaveChangesAsync();
 
-                return ActionResult.Success();
+                return ActionResult.Success(wishDay);
             }
             catch (Exception ex)
             {
@@ -78,7 +74,7 @@ namespace MyNotes.Web.Services
             }
         }
 
-        private IEnumerable<NoteDay> Query()
+        private IEnumerable<WishDay> Query()
         {
             return _dbContext.NoteDaysRepository.Query(n => !n.IsDeleted);
         }
