@@ -11,6 +11,7 @@ using MyNotes.Web.MultiTenancy.Sources;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Formatters;
 using Newtonsoft.Json.Serialization;
+using Glimpse;
 
 namespace MyNotes.Web
 {
@@ -40,6 +41,7 @@ namespace MyNotes.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddLogging();
+            services.AddGlimpse();
 
             services.AddMultitenancy<MultiTenancyResolver>().Configure<MultiTenancyOptions>(opt =>
             {
@@ -57,7 +59,7 @@ namespace MyNotes.Web
             services.AddTransient<ITenantsService, TenantsService>();
             services.AddTransient<INoteDaysService, NoteDaysService>();
             services.AddInstance<IUserContextService>(new FakeUserContextService(Guid.NewGuid()));
-
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,6 +99,11 @@ namespace MyNotes.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            if (env.IsDevelopment())
+            {
+                app.UseGlimpse();
+            }
         }
 
         // Entry point for the application.
