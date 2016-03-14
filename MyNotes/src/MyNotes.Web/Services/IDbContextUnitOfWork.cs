@@ -10,7 +10,8 @@ namespace MyNotes.Web.Services
 {
     public interface IDbContextUnitOfWork
     {
-        IRepository<WishDay> NoteDaysRepository { get; }
+        IRepository<WishDay> WishDaysRepository { get; }
+        IRepository<WishItem> WishItemsRepository { get; }
         IRepository<AppTenant> TenantsRepository { get; }
 
         Task SaveChangesAsync();
@@ -19,7 +20,7 @@ namespace MyNotes.Web.Services
     public class CollectionContext : IDbContextUnitOfWork
     {
         private Repository<WishDay, int> _noteDaysRepository;
-        public IRepository<WishDay> NoteDaysRepository
+        public IRepository<WishDay> WishDaysRepository
         {
             get
             {
@@ -41,6 +42,19 @@ namespace MyNotes.Web.Services
                     _tenantRepository = new Repository<AppTenant, string>();
                 }
                 return _tenantRepository;
+            }
+        }
+
+        private Repository<WishItem, int> _wishItemsRepository;
+        public IRepository<WishItem> WishItemsRepository
+        {
+            get
+            {
+                if (_wishItemsRepository == null)
+                {
+                    _wishItemsRepository = new Repository<WishItem, int>();
+                }
+                return _wishItemsRepository;
             }
         }
 

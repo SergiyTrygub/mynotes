@@ -11,15 +11,15 @@ using System;
 namespace MyNotes.Web.Controllers.Api.v1
 {
     [Route("api/[controller]/{tenantId}")]
-    public class NoteDaysController : Controller
+    public class WishDaysController : Controller
     {
         private readonly IUserContextService _userContextService;
-        private readonly ILogger<NoteDaysController> _logger;
-        private readonly INoteDaysService _service;
+        private readonly ILogger<WishDaysController> _logger;
+        private readonly IWishDaysService _service;
 
-        public NoteDaysController(
-            INoteDaysService service, 
-            ILogger<NoteDaysController> logger)
+        public WishDaysController(
+            IWishDaysService service, 
+            ILogger<WishDaysController> logger)
         {
             _service = service;
             _logger = logger;

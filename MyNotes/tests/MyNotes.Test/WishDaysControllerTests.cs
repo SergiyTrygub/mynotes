@@ -11,17 +11,17 @@ using Xunit;
 
 namespace MyNotes.Test
 {
-    public class NoteDaysControllerTests
+    public class WishDaysControllerTests
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public NoteDaysControllerTests()
+        public WishDaysControllerTests()
         {
             var services = new ServiceCollection();
 
             services.AddLogging();
             services.AddTransient<IDbContextUnitOfWork, CollectionContext>();
-            services.AddTransient<INoteDaysService, NoteDaysService>();
+            services.AddTransient<IWishDaysService, WishDaysService>();
 
             _serviceProvider = services.BuildServiceProvider();
         }
@@ -29,7 +29,7 @@ namespace MyNotes.Test
         [Fact]
         public async void get()
         {
-            var controller = GetNoteDaysController();
+            var controller = GetWishDaysController();
             var result = await controller.Get("test tenant");
             Assert.True(result != null);
         }
@@ -37,7 +37,7 @@ namespace MyNotes.Test
         [Fact]
         public async void post()
         {
-            var controller = GetNoteDaysController();
+            var controller = GetWishDaysController();
             var cnt = (await controller.Get("test tenant"))?.Count() ?? 0;
             var result = await controller.Post("testtenant", GetNewNoteDay());
             Assert.True(result != null);
@@ -53,7 +53,7 @@ namespace MyNotes.Test
         [Fact]
         public async void delete()
         {
-            var controller = GetNoteDaysController();
+            var controller = GetWishDaysController();
             var result = await controller.Post("test tenant", GetNewNoteDay());
             Assert.True(result != null);
             Assert.True((result as CreatedResult) != null);
@@ -66,11 +66,11 @@ namespace MyNotes.Test
             Assert.True(cnt == 0);
         }
 
-        private NoteDaysController GetNoteDaysController()
+        private WishDaysController GetWishDaysController()
         {
-            var service = _serviceProvider.GetRequiredService<INoteDaysService>();
-            var logger = _serviceProvider.GetRequiredService<ILogger<NoteDaysController>>();
-            return new NoteDaysController(service, logger);
+            var service = _serviceProvider.GetRequiredService<IWishDaysService>();
+            var logger = _serviceProvider.GetRequiredService<ILogger<WishDaysController>>();
+            return new WishDaysController(service, logger);
         }
 
         private WishDay GetNewNoteDay()

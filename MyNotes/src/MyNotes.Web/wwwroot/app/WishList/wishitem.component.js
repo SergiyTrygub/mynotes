@@ -18,11 +18,19 @@ System.register(['angular2/core'], function(exports_1) {
         execute: function() {
             WishItemComponent = (function () {
                 function WishItemComponent() {
+                    this.onWishItemRemove = new core_1.EventEmitter();
                 }
+                WishItemComponent.prototype.removeWishItemClicked = function () {
+                    this.onWishItemRemove.emit(this.item.id);
+                };
                 __decorate([
                     core_1.Input(), 
                     __metadata('design:type', Object)
                 ], WishItemComponent.prototype, "item", void 0);
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', Object)
+                ], WishItemComponent.prototype, "onWishItemRemove", void 0);
                 WishItemComponent = __decorate([
                     core_1.Component({
                         selector: 'wish-item',

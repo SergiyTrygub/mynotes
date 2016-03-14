@@ -14,7 +14,7 @@ var WishItems: WishItem[] = [
 export class WishItemsService {
     constructor(private http: Http) { }
 
-    private _apiUrl = 'api/notedays';  // URL to web api
+    private _apiUrl = 'api/wishdays';  // URL to web api
 
     getItems(tenantId: string) {
         var url = this._apiUrl + tenantId;
@@ -39,7 +39,7 @@ export class WishItemsService {
             .catch(this.handleError);
     }
 
-    saveWishDay(tenantId: string, wishDay: WishDay) {
+    saveWishDay(tenantId: string, wishDay: WishDay): Observable<WishDay> {
         var url = this._apiUrl + tenantId + "/" + wishDay.date;
 
         let body = JSON.stringify(wishDay);
@@ -50,6 +50,9 @@ export class WishItemsService {
             .map(res => <WishDay>res.json().item)
             .do(item => console.log(item))
             .catch(this.handleError);
+    }
+
+    removeWishItem(tenantId: string, itemId: number) {
     }
 
     private handleError(error: Response) {

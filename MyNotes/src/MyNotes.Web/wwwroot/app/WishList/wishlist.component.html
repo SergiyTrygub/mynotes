@@ -11,7 +11,10 @@
     </header>
     <section class="main" *ngIf="currentWishDay">
         <ul class="todo-list">
-            <wish-item *ngFor="#item of currentWishDay.wishList" [item]="item">
+            <wish-item 
+                       *ngFor="#item of currentWishDay.wishList" 
+                       [item]="item"
+                       (onWishItemRemove)="removeItem($event)">
             </wish-item>
             <!--<todo-item *ngFor="#item of WishItems"
                        [item]="item"

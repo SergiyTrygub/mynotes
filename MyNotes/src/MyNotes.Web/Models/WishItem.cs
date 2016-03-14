@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MyNotes.Web.Models
 {
-    public class WishItem
+    public class WishItem : IEntity<int>
     {
         public int Id { get; set; }
 

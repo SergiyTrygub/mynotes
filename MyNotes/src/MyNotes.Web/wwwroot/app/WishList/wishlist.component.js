@@ -51,6 +51,7 @@ System.register(['angular2/core', './../wishlist/wishitem.component', './../serv
                     //this.getwishItems();
                 };
                 WishListComponent.prototype.addItem = function () {
+                    var _this = this;
                     console.log('Add clicked', this.newItem);
                     if (this.currentWishDay) {
                         this.currentWishDay.wishList.push({
@@ -59,11 +60,15 @@ System.register(['angular2/core', './../wishlist/wishitem.component', './../serv
                             id: 0
                         });
                         var tenantId = window.location.pathname;
-                        this._wishItemsService.saveWishDay(tenantId, this.currentWishDay);
+                        this._wishItemsService.saveWishDay(tenantId, this.currentWishDay)
+                            .subscribe(function (day) {
+                            _this.currentWishDay = day;
+                        }, function (error) { return _this.errorMessage = error; });
                         this.newItem.text = "";
                     }
-                    //this.store.dispatch(addItem(this.newItem));
-                    //this.newItem = '';
+                };
+                WishListComponent.prototype.removeItem = function (id) {
+                    console.log('removing item', id);
                 };
                 WishListComponent = __decorate([
                     core_1.Component({

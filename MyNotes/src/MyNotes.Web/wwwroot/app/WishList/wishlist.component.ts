@@ -53,10 +53,15 @@ export class WishListComponent implements OnInit {
                 id: 0
             });
             var tenantId = window.location.pathname;
-            this._wishItemsService.saveWishDay(tenantId, this.currentWishDay);
+            this._wishItemsService.saveWishDay(tenantId, this.currentWishDay)
+                .subscribe(day => {
+                    this.currentWishDay = day;
+                }, error => this.errorMessage = <any>error);
             this.newItem.text = "";
         }
-        //this.store.dispatch(addItem(this.newItem));
-        //this.newItem = '';
+    }
+
+    removeItem(id: number) {
+        console.log('removing item', id);
     }
 }

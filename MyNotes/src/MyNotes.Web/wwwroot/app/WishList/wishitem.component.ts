@@ -1,4 +1,4 @@
-﻿import {Component, Input} from 'angular2/core';
+﻿import {Component, Input, Output, EventEmitter} from 'angular2/core';
 import {WishItem} from './../wishlist/wishitem';
 
 @Component({
@@ -9,4 +9,11 @@ import {WishItem} from './../wishlist/wishitem';
 export class WishItemComponent {
     @Input()
     item: WishItem;
+
+    @Output()
+    onWishItemRemove = new EventEmitter<number>();
+
+    removeWishItemClicked() {
+        this.onWishItemRemove.emit(this.item.id);
+    }
 }

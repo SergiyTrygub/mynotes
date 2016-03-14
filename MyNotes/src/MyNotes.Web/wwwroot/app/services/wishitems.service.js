@@ -30,7 +30,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
             WishItemsService = (function () {
                 function WishItemsService(http) {
                     this.http = http;
-                    this._apiUrl = 'api/notedays'; // URL to web api
+                    this._apiUrl = 'api/wishdays'; // URL to web api
                 }
                 WishItemsService.prototype.getItems = function (tenantId) {
                     var url = this._apiUrl + tenantId;
@@ -60,6 +60,8 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                         .map(function (res) { return res.json().item; })
                         .do(function (item) { return console.log(item); })
                         .catch(this.handleError);
+                };
+                WishItemsService.prototype.removeWishItem = function (tenantId, itemId) {
                 };
                 WishItemsService.prototype.handleError = function (error) {
                     // in a real world app, we may send the error to some remote logging infrastructure

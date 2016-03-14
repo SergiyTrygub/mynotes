@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyNotes.Web.Services
 {
-    public interface INoteDaysService
+    public interface IWishDaysService
     {
         Task<IEnumerable<WishDay>> GetAsync(string tenantId);
         Task<WishDay> GetWishDayAsync(string tenantId, DateTime date);
@@ -17,10 +17,10 @@ namespace MyNotes.Web.Services
         Task<ActionResult> DeleteAsync(int id);
     }
 
-    public class NoteDaysService : INoteDaysService
+    public class WishDaysService : IWishDaysService
     {
         IDbContextUnitOfWork _dbContext;
-        public NoteDaysService(IDbContextUnitOfWork dbContext)
+        public WishDaysService(IDbContextUnitOfWork dbContext)
         {
             _dbContext = dbContext;
         }
@@ -29,10 +29,10 @@ namespace MyNotes.Web.Services
         {
             try
             {
-                var item = _dbContext.NoteDaysRepository.Query(n => n.Id == id).FirstOrDefault();
+                var item = _dbContext.WishDaysRepository.Query(n => n.Id == id).FirstOrDefault();
                 if (item != null)
                 {
-                    _dbContext.NoteDaysRepository.Delete(item);
+                    _dbContext.WishDaysRepository.Delete(item);
                     await _dbContext.SaveChangesAsync();
                 }
                 return ActionResult.Success();
@@ -58,12 +58,12 @@ namespace MyNotes.Web.Services
             try
             {
                 wishDay.TenantId = tenantId;
-                var item = _dbContext.NoteDaysRepository.Query(l => l.Id == wishDay.Id).FirstOrDefault();
+                var item = _dbContext.WishDaysRepository.Query(l => l.Id == wishDay.Id).FirstOrDefault();
                 if (item != null)
                 {
-                    _dbContext.NoteDaysRepository.Delete(item);
+                    _dbContext.WishDaysRepository.Delete(item);
                 }
-                _dbContext.NoteDaysRepository.Insert(wishDay);
+                _dbContext.WishDaysRepository.Insert(wishDay);
                 await _dbContext.SaveChangesAsync();
 
                 return ActionResult.Success(wishDay);
@@ -76,7 +76,7 @@ namespace MyNotes.Web.Services
 
         private IEnumerable<WishDay> Query()
         {
-            return _dbContext.NoteDaysRepository.Query(n => !n.IsDeleted);
+            return _dbContext.WishDaysRepository.Query(n => !n.IsDeleted);
         }
     }
 }
