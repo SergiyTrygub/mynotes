@@ -4,55 +4,28 @@ import {Observable} from 'rxjs/Observable';
 import {WishItem} from './../wishlist/wishitem';
 import {WishDay} from './../wishlist/wishday.model';
 
-var WishItems: WishItem[] = [
-    { id: 1, position: 1, text: 'test 1' },
-    { id: 2, position: 2, text: 'test 2' },
-    { id: 3, position: 3, text: 'test 3' },
-];
-
 @Injectable()
 export class WishItemsService {
     constructor(private http: Http) { }
 
-    private _apiUrl = 'api/wishdays';  // URL to web api
+    private _apiUrl = 'api/wishitems';  // URL to web api
 
-    getItems(tenantId: string) {
-        var url = this._apiUrl + tenantId;
-        console.log(url);
-        return this.http.get(url)
-            .map(res => <WishItem[]>res.json().data)
-            .do(data => console.log(data)) 
-            .catch(this.handleError);
-    }
+    saveWishItem(item: WishItem): Observable<WishItem> {
+        var url = this._apiUrl;
 
-    createNewDay(tenantId: string): Observable<WishDay> {
-        var url = this._apiUrl + tenantId;
-        console.log("createNewDay", url);
-
-        let body = JSON.stringify({ id: 0, date: new Date() });
+        let body = JSON.stringify(item);
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
 
         return this.http.post(url, body, options)
-            .map(res => <WishDay>res.json().item)
-            .do(item => console.log(item)) 
-            .catch(this.handleError);
-    }
-
-    saveWishDay(tenantId: string, wishDay: WishDay): Observable<WishDay> {
-        var url = this._apiUrl + tenantId + "/" + wishDay.date;
-
-        let body = JSON.stringify(wishDay);
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-
-        return this.http.put(url, body, options)
-            .map(res => <WishDay>res.json().item)
+            .map(res => <WishItem>res.json().item)
             .do(item => console.log(item))
             .catch(this.handleError);
     }
 
-    removeWishItem(tenantId: string, itemId: number) {
+    removeWishItem(itemId: number): Observable<Response> {
+        var url = this._apiUrl + "/" + itemId;
+        return this.http.delete(url);
     }
 
     private handleError(error: Response) {

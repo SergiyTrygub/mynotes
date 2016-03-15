@@ -3,6 +3,7 @@ import {OnInit} from 'angular2/core';
 import {WishDay} from './../wishlist/wishday.model';
 import {WishItem} from './../wishlist/wishitem';
 import {WishItemComponent} from './../wishlist/wishitem.component'
+import {WishDaysService} from './../services/wishdays.service';
 import {WishItemsService} from './../services/wishitems.service';
 
 @Component({
@@ -12,7 +13,10 @@ import {WishItemsService} from './../services/wishitems.service';
     directives: [WishItemComponent]
 })
 export class WishListComponent implements OnInit {
-    constructor(private _wishItemsService: WishItemsService) { }
+    constructor(
+        private _wishItemsService: WishItemsService,
+        private _wishDaysService: WishDaysService) {
+    }
 
     public currentWishDay: WishDay;
     public errorMessage: string;
@@ -21,18 +25,19 @@ export class WishListComponent implements OnInit {
     public newItem: WishItem = {
         id: 0,
         position: 0,
-        text: ''
+        text: '',
+        wishDayId: 0
     };
 
-    getwishItems() {
-        var tenantId = window.location.pathname;
-        this._wishItemsService.getItems(tenantId)
-            .subscribe(items => this.currentWishDay.wishList = items);
-    }
+    //getwishItems() {
+    //    var tenantId = window.location.pathname;
+    //    this._wishItemsService.getItems(tenantId)
+    //        .subscribe(items => this.currentWishDay.wishList = items);
+    //}
 
     createNewDay() {
         var tenantId = window.location.pathname;
-        this._wishItemsService.createNewDay(tenantId)
+        this._wishDaysService.createNewDay(tenantId)
             .subscribe(day => {
                 this.currentWishDay = day;
                 this.currentWishDay.wishList = [];
@@ -47,15 +52,16 @@ export class WishListComponent implements OnInit {
     addItem() {
         console.log('Add clicked', this.newItem);
         if (this.currentWishDay) {
-            this.currentWishDay.wishList.push({
+            var newItem = {
                 text: this.newItem.text,
                 position: this.currentWishDay.wishList.length,
-                id: 0
-            });
+                id: 0,
+                wishDayId: this.currentWishDay.id
+            };
             var tenantId = window.location.pathname;
-            this._wishItemsService.saveWishDay(tenantId, this.currentWishDay)
-                .subscribe(day => {
-                    this.currentWishDay = day;
+            this._wishItemsService.saveWishItem(newItem)
+                .subscribe(item => {
+                    this.currentWishDay.wishList.push(item);
                 }, error => this.errorMessage = <any>error);
             this.newItem.text = "";
         }
@@ -63,5 +69,13 @@ export class WishListComponent implements OnInit {
 
     removeItem(id: number) {
         console.log('removing item', id);
+        this._wishItemsService.removeWishItem(id)
+            .subscribe(res => {
+                console.log(res);
+                this.currentWishDay.wishList = this.currentWishDay.wishList.filter(function (current, idx, array) {
+                    return current.id != id;
+                });
+            },
+            error => this.errorMessage = <any>error);
     }
 }

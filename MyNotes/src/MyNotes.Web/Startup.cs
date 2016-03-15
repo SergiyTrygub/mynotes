@@ -55,7 +55,7 @@ namespace MyNotes.Web
                 };
                 options.OutputFormatters.Insert(0, formatter);
             });
-            services.AddTransient<IDbContextUnitOfWork, CollectionContext>();
+            services.AddSingleton<IDbContextUnitOfWork, InMemoryCollectionContext>();
             services.AddTransient<ITenantsService, TenantsService>();
             services.AddTransient<IWishDaysService, WishDaysService>();
             services.AddTransient<IWishItemsService, WishItemsService>();

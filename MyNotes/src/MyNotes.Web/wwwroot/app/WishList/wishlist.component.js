@@ -1,4 +1,4 @@
-System.register(['angular2/core', './../wishlist/wishitem.component', './../services/wishitems.service'], function(exports_1) {
+System.register(['angular2/core', './../wishlist/wishitem.component', './../services/wishdays.service', './../services/wishitems.service'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', './../wishlist/wishitem.component', './../serv
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, wishitem_component_1, wishitems_service_1;
+    var core_1, wishitem_component_1, wishdays_service_1, wishitems_service_1;
     var WishListComponent;
     return {
         setters:[
@@ -18,30 +18,34 @@ System.register(['angular2/core', './../wishlist/wishitem.component', './../serv
             function (wishitem_component_1_1) {
                 wishitem_component_1 = wishitem_component_1_1;
             },
+            function (wishdays_service_1_1) {
+                wishdays_service_1 = wishdays_service_1_1;
+            },
             function (wishitems_service_1_1) {
                 wishitems_service_1 = wishitems_service_1_1;
             }],
         execute: function() {
             WishListComponent = (function () {
-                function WishListComponent(_wishItemsService) {
+                function WishListComponent(_wishItemsService, _wishDaysService) {
                     this._wishItemsService = _wishItemsService;
+                    this._wishDaysService = _wishDaysService;
                     //public wishItems: WishItem[];
                     this.newItem = {
                         id: 0,
                         position: 0,
-                        text: ''
+                        text: '',
+                        wishDayId: 0
                     };
                 }
-                WishListComponent.prototype.getwishItems = function () {
-                    var _this = this;
-                    var tenantId = window.location.pathname;
-                    this._wishItemsService.getItems(tenantId)
-                        .subscribe(function (items) { return _this.currentWishDay.wishList = items; });
-                };
+                //getwishItems() {
+                //    var tenantId = window.location.pathname;
+                //    this._wishItemsService.getItems(tenantId)
+                //        .subscribe(items => this.currentWishDay.wishList = items);
+                //}
                 WishListComponent.prototype.createNewDay = function () {
                     var _this = this;
                     var tenantId = window.location.pathname;
-                    this._wishItemsService.createNewDay(tenantId)
+                    this._wishDaysService.createNewDay(tenantId)
                         .subscribe(function (day) {
                         _this.currentWishDay = day;
                         _this.currentWishDay.wishList = [];
@@ -54,21 +58,30 @@ System.register(['angular2/core', './../wishlist/wishitem.component', './../serv
                     var _this = this;
                     console.log('Add clicked', this.newItem);
                     if (this.currentWishDay) {
-                        this.currentWishDay.wishList.push({
+                        var newItem = {
                             text: this.newItem.text,
                             position: this.currentWishDay.wishList.length,
-                            id: 0
-                        });
+                            id: 0,
+                            wishDayId: this.currentWishDay.id
+                        };
                         var tenantId = window.location.pathname;
-                        this._wishItemsService.saveWishDay(tenantId, this.currentWishDay)
-                            .subscribe(function (day) {
-                            _this.currentWishDay = day;
+                        this._wishItemsService.saveWishItem(newItem)
+                            .subscribe(function (item) {
+                            _this.currentWishDay.wishList.push(item);
                         }, function (error) { return _this.errorMessage = error; });
                         this.newItem.text = "";
                     }
                 };
                 WishListComponent.prototype.removeItem = function (id) {
+                    var _this = this;
                     console.log('removing item', id);
+                    this._wishItemsService.removeWishItem(id)
+                        .subscribe(function (res) {
+                        console.log(res);
+                        _this.currentWishDay.wishList = _this.currentWishDay.wishList.filter(function (current, idx, array) {
+                            return current.id != id;
+                        });
+                    }, function (error) { return _this.errorMessage = error; });
                 };
                 WishListComponent = __decorate([
                     core_1.Component({
@@ -77,7 +90,7 @@ System.register(['angular2/core', './../wishlist/wishitem.component', './../serv
                         styleUrls: ['app/wishlist/wishlist.component.css'],
                         directives: [wishitem_component_1.WishItemComponent]
                     }), 
-                    __metadata('design:paramtypes', [wishitems_service_1.WishItemsService])
+                    __metadata('design:paramtypes', [wishitems_service_1.WishItemsService, wishdays_service_1.WishDaysService])
                 ], WishListComponent);
                 return WishListComponent;
             })();

@@ -20,7 +20,7 @@ namespace MyNotes.Test
             var services = new ServiceCollection();
 
             services.AddLogging();
-            services.AddTransient<IDbContextUnitOfWork, CollectionContext>();
+            services.AddTransient<IDbContextUnitOfWork, InMemoryCollectionContext>();
             services.AddTransient<ITenantsService, TenantsService>();
 
             _serviceProvider = services.BuildServiceProvider();

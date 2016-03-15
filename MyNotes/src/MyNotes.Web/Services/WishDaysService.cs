@@ -61,9 +61,12 @@ namespace MyNotes.Web.Services
                 var item = _dbContext.WishDaysRepository.Query(l => l.Id == wishDay.Id).FirstOrDefault();
                 if (item != null)
                 {
-                    _dbContext.WishDaysRepository.Delete(item);
+                    _dbContext.WishDaysRepository.Update(item);
                 }
-                _dbContext.WishDaysRepository.Insert(wishDay);
+                else
+                {
+                    _dbContext.WishDaysRepository.Insert(wishDay);
+                }
                 await _dbContext.SaveChangesAsync();
 
                 return ActionResult.Success(wishDay);

@@ -21,7 +21,7 @@ namespace MyNotes.Test
             var services = new ServiceCollection();
 
             services.AddLogging();
-            services.AddTransient<IDbContextUnitOfWork, CollectionContext>();
+            services.AddTransient<IDbContextUnitOfWork, InMemoryCollectionContext>();
             services.AddTransient<IWishItemsService, WishItemsService>();
 
             _serviceProvider = services.BuildServiceProvider();
@@ -40,12 +40,9 @@ namespace MyNotes.Test
         {
             var controller = GetWishItemsController();
             var cnt = (await controller.Get(1))?.Count() ?? 0;
-            var result = await controller.Post(new WishItem { Text = "test" });
+            var result = await controller.Post(new WishItem { Text = "test", WishDayId = 1 });
             Assert.True(result != null);
             Assert.True((result as CreatedResult) != null);
-
-            cnt = (await controller.Get(1))?.Count() ?? 0;
-            Assert.True(cnt == 0);
 
             cnt = (await controller.Get(1))?.Count() ?? 0;
             Assert.True(cnt == 1);

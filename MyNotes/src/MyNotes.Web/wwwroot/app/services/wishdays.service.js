@@ -9,7 +9,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, http_1, Observable_1;
-    var WishItemsService;
+    var WishDaysService;
     return {
         setters:[
             function (core_1_1) {
@@ -22,14 +22,23 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                 Observable_1 = Observable_1_1;
             }],
         execute: function() {
-            WishItemsService = (function () {
-                function WishItemsService(http) {
+            WishDaysService = (function () {
+                function WishDaysService(http) {
                     this.http = http;
-                    this._apiUrl = 'api/wishitems'; // URL to web api
+                    this._apiUrl = 'api/wishdays'; // URL to web api
                 }
-                WishItemsService.prototype.saveWishItem = function (item) {
-                    var url = this._apiUrl;
-                    var body = JSON.stringify(item);
+                WishDaysService.prototype.getWishDays = function (tenantId) {
+                    var url = this._apiUrl + tenantId;
+                    console.log(url);
+                    return this.http.get(url)
+                        .map(function (res) { return res.json().data; })
+                        .do(function (data) { return console.log(data); })
+                        .catch(this.handleError);
+                };
+                WishDaysService.prototype.createNewDay = function (tenantId) {
+                    var url = this._apiUrl + tenantId;
+                    console.log("createNewDay", url);
+                    var body = JSON.stringify({ id: 0, date: new Date() });
                     var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
                     var options = new http_1.RequestOptions({ headers: headers });
                     return this.http.post(url, body, options)
@@ -37,24 +46,30 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                         .do(function (item) { return console.log(item); })
                         .catch(this.handleError);
                 };
-                WishItemsService.prototype.removeWishItem = function (itemId) {
-                    var url = this._apiUrl + "/" + itemId;
-                    return this.http.delete(url);
+                WishDaysService.prototype.saveWishDay = function (tenantId, wishDay) {
+                    var url = this._apiUrl + tenantId + "/" + wishDay.date;
+                    var body = JSON.stringify(wishDay);
+                    var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+                    var options = new http_1.RequestOptions({ headers: headers });
+                    return this.http.put(url, body, options)
+                        .map(function (res) { return res.json().item; })
+                        .do(function (item) { return console.log(item); })
+                        .catch(this.handleError);
                 };
-                WishItemsService.prototype.handleError = function (error) {
+                WishDaysService.prototype.handleError = function (error) {
                     // in a real world app, we may send the error to some remote logging infrastructure
                     // instead of just logging it to the console
                     console.error(error);
                     return Observable_1.Observable.throw(error.json().error || 'Server error');
                 };
-                WishItemsService = __decorate([
+                WishDaysService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http])
-                ], WishItemsService);
-                return WishItemsService;
+                ], WishDaysService);
+                return WishDaysService;
             })();
-            exports_1("WishItemsService", WishItemsService);
+            exports_1("WishDaysService", WishDaysService);
         }
     }
 });
-//# sourceMappingURL=wishitems.service.js.map
+//# sourceMappingURL=wishdays.service.js.map

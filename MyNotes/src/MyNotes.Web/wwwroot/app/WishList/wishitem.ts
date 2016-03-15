@@ -2,4 +2,5 @@
     id: number;
     text: string;
     position: number;
+    wishDayId: number;
 }
