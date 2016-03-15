@@ -12,6 +12,7 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Formatters;
 using Newtonsoft.Json.Serialization;
 using Glimpse;
+using Microsoft.Data.Entity;
 
 namespace MyNotes.Web
 {
@@ -42,6 +43,11 @@ namespace MyNotes.Web
         {
             services.AddLogging();
             services.AddGlimpse();
+
+            var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];
+            services.AddEntityFramework()
+                            .AddSqlServer()
+                            .AddDbContext<MyWishesDbContext>(options => options.UseSqlServer(connectionString));
 
             services.AddMultitenancy<MultiTenancyResolver>().Configure<MultiTenancyOptions>(opt =>
             {
