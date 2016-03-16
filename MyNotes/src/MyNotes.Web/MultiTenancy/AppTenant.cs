@@ -1,4 +1,5 @@
-﻿using MyNotes.Web.Models;
+﻿using System;
+using MyNotes.Web.Models;
 
 namespace MyNotes.Web.MultiTenancy
 {
@@ -13,5 +14,7 @@ namespace MyNotes.Web.MultiTenancy
         public bool IsPrivate { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public byte[] Timestamp { get; set; }
     }
 }

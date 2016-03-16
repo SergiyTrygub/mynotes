@@ -61,7 +61,7 @@ namespace MyNotes.Web
                 };
                 options.OutputFormatters.Insert(0, formatter);
             });
-            services.AddSingleton<IDbContextUnitOfWork, InMemoryCollectionContext>();
+            services.AddSingleton<IDbContextUnitOfWork, MyWishesInMemoryContext>();
             services.AddTransient<ITenantsService, TenantsService>();
             services.AddTransient<IWishDaysService, WishDaysService>();
             services.AddTransient<IWishItemsService, WishItemsService>();

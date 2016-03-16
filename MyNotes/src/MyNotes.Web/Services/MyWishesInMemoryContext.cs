@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyNotes.Web.Services
 {
-    public class InMemoryCollectionContext : IDbContextUnitOfWork
+    public class MyWishesInMemoryContext : IDbContextUnitOfWork
     {
         private InMemoryRepository<WishDay, int> _noteDaysRepository;
         public IRepository<WishDay> WishDaysRepository

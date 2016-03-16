@@ -10,5 +10,7 @@ namespace MyNotes.Web.Models
         T Id { get; set; }
 
         bool IsDeleted { get; set; }
+
+        byte[] Timestamp { get; set; }
     }
 }

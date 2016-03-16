@@ -21,7 +21,7 @@ namespace MyNotes.Test
             var services = new ServiceCollection();
 
             services.AddLogging();
-            services.AddTransient<IDbContextUnitOfWork, InMemoryCollectionContext>();
+            services.AddTransient<IDbContextUnitOfWork, MyWishesInMemoryContext>();
             services.AddTransient<IWishItemsService, WishItemsService>();
 
             _serviceProvider = services.BuildServiceProvider();

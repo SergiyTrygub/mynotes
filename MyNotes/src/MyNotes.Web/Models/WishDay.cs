@@ -20,8 +20,8 @@ namespace MyNotes.Web.Models
 
         public bool IsDeleted { get; set; }
 
-        //[Required]
-        //[Range(1, 10000)]
-        public IEnumerable<WishItem> WishList { get; set; }
+        public List<WishItem> WishList { get; set; }
+
+        public byte[] Timestamp { get; set; }
     }
 }
