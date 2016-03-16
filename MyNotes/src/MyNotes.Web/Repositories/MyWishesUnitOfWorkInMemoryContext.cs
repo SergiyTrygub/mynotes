@@ -6,54 +6,22 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace MyNotes.Web.Services
+namespace MyNotes.Web.Repositories
 {
-    public class MyWishesInMemoryContext : IDbContextUnitOfWork
+ 
+    public class MyWishesUnitOfWorkInMemoryContext : MyWishesUnitOfWorkContextBase
     {
-        private InMemoryRepository<WishDay, int> _noteDaysRepository;
-        public IRepository<WishDay> WishDaysRepository
-        {
-            get
-            {
-                if (_noteDaysRepository == null)
-                {
-                    _noteDaysRepository = new InMemoryRepository<WishDay, int>();
-                }
-                return _noteDaysRepository;
-            }
-        }
-
-        private InMemoryRepository<AppTenant, string> _tenantRepository;
-        public IRepository<AppTenant> TenantsRepository
-        {
-            get
-            {
-                if (_tenantRepository == null)
-                {
-                    _tenantRepository = new InMemoryRepository<AppTenant, string>();
-                }
-                return _tenantRepository;
-            }
-        }
-
-        private InMemoryRepository<WishItem, int> _wishItemsRepository;
-        public IRepository<WishItem> WishItemsRepository
-        {
-            get
-            {
-                if (_wishItemsRepository == null)
-                {
-                    _wishItemsRepository = new InMemoryRepository<WishItem, int>();
-                }
-                return _wishItemsRepository;
-            }
-        }
-
-        public Task SaveChangesAsync()
-        {
-            //throw new NotImplementedException();
-            return Task.FromResult(0);
-        }
+        public MyWishesUnitOfWorkInMemoryContext(
+            IRepository<AppTenant> tenantsRepository,
+            IRepository<WishDay> wishDaysRepository,
+            IRepository<WishItem> wishItemsRepository,
+            IRepository<WishItemTag> wishItemTagsRepository) 
+                :base(
+                     tenantsRepository, 
+                     wishDaysRepository, 
+                     wishItemsRepository, 
+                     wishItemTagsRepository)
+        { }
     }
 
     public class InMemoryRepository<T, K> : IRepository<T> where T : class, IEntity<K>

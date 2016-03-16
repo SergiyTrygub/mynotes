@@ -1,6 +1,6 @@
-﻿using Microsoft.Data.Entity;
-using MyNotes.Web.Infrastructure;
+﻿using MyNotes.Web.Infrastructure;
 using MyNotes.Web.Models;
+using MyNotes.Web.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +19,8 @@ namespace MyNotes.Web.Services
 
     public class WishDaysService : IWishDaysService
     {
-        IDbContextUnitOfWork _dbContext;
-        public WishDaysService(IDbContextUnitOfWork dbContext)
+        IUnitOfWorkContext _dbContext;
+        public WishDaysService(IUnitOfWorkContext dbContext)
         {
             _dbContext = dbContext;
         }

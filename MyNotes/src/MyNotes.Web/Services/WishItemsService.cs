@@ -1,5 +1,6 @@
 ﻿using MyNotes.Web.Infrastructure;
 using MyNotes.Web.Models;
+using MyNotes.Web.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,8 @@ namespace MyNotes.Web.Services
 
     public class WishItemsService : IWishItemsService
     {
-        IDbContextUnitOfWork _dbContext;
-        public WishItemsService(IDbContextUnitOfWork dbContext)
+        IUnitOfWorkContext _dbContext;
+        public WishItemsService(IUnitOfWorkContext dbContext)
         {
             _dbContext = dbContext;
         }

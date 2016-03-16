@@ -6,12 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 
-namespace MyNotes.Web.Services
+namespace MyNotes.Web.Repositories
 {
-    public interface IDbContextUnitOfWork
+    public interface IUnitOfWorkContext
     {
         IRepository<WishDay> WishDaysRepository { get; }
         IRepository<WishItem> WishItemsRepository { get; }
+        IRepository<WishItemTag> WishItemTagsRepository { get; }
         IRepository<AppTenant> TenantsRepository { get; }
 
         Task SaveChangesAsync();

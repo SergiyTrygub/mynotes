@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyNotes.Web.Controllers.Api.v1;
 using MyNotes.Web.Models;
+using MyNotes.Web.Repositories;
 using MyNotes.Web.Services;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace MyNotes.Test
             var services = new ServiceCollection();
 
             services.AddLogging();
-            services.AddTransient<IDbContextUnitOfWork, MyWishesInMemoryContext>();
+            services.AddTransient<IUnitOfWorkContext, MyWishesUnitOfWorkInMemoryContext>();
             services.AddTransient<IWishItemsService, WishItemsService>();
 
             _serviceProvider = services.BuildServiceProvider();

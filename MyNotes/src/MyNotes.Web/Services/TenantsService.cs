@@ -1,5 +1,6 @@
 ﻿using MyNotes.Web.Infrastructure;
 using MyNotes.Web.MultiTenancy;
+using MyNotes.Web.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,9 @@ namespace MyNotes.Web.Services
 
     public class TenantsService : ITenantsService
     {
-        private readonly IDbContextUnitOfWork _dbContext;
+        private readonly IUnitOfWorkContext _dbContext;
 
-        public TenantsService(IDbContextUnitOfWork dbContext)
+        public TenantsService(IUnitOfWorkContext dbContext)
         {
             _dbContext = dbContext;
         }

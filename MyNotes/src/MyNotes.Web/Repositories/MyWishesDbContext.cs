@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyNotes.Web.Services
+namespace MyNotes.Web.Repositories
 {
     public class MyWishesDbContext : DbContext
     {

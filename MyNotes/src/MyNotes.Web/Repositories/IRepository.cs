@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace MyNotes.Web.Services
+namespace MyNotes.Web.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
