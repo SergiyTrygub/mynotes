@@ -8,12 +8,10 @@ using Microsoft.Extensions.Logging;
 using MyNotes.Web.MultiTenancy;
 using MyNotes.Web.MultiTenancy.Resolvers;
 using MyNotes.Web.MultiTenancy.Sources;
-using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Formatters;
 using Newtonsoft.Json.Serialization;
 using Glimpse;
 using Microsoft.Data.Entity;
-using MyNotes.Web.Models;
 using MyNotes.Web.Repositories;
 
 namespace MyNotes.Web
@@ -63,11 +61,7 @@ namespace MyNotes.Web
                 };
                 options.OutputFormatters.Insert(0, formatter);
             });
-            services.AddSingleton<IRepository<AppTenant>, InMemoryRepository<AppTenant, string>>();
-            services.AddSingleton<IRepository<WishDay>, InMemoryRepository<WishDay, int>>();
-            services.AddSingleton<IRepository<WishItem>, InMemoryRepository<WishItem, int>>();
-            services.AddSingleton<IRepository<WishItemTag>, InMemoryRepository<WishItemTag, int>>();
-            services.AddSingleton<IUnitOfWorkContext, MyWishesUnitOfWorkInMemoryContext>();
+            services.AddMyWishesDbContext();
             services.AddTransient<ITenantsService, TenantsService>();
             services.AddTransient<IWishDaysService, WishDaysService>();
             services.AddTransient<IWishItemsService, WishItemsService>();
@@ -83,13 +77,13 @@ namespace MyNotes.Web
 
             if (env.IsDevelopment())
             {
-                //app.UseBrowserLink();
-                //app.UseDeveloperExceptionPage();
-                //app.UseDatabaseErrorPage();
+                app.UseBrowserLink();
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
-                //app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Home/Error");
 
                 // For more details on creating database during deployment see http://go.microsoft.com/fwlink/?LinkID=615859
             }

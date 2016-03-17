@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MyNotes.Web.Models;
 using MyNotes.Web.MultiTenancy;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MyNotes.Web.Repositories
 {
@@ -12,7 +13,7 @@ namespace MyNotes.Web.Repositories
     {
         MyWishesDbContext _dbContext;
 
-        protected MyWishesUnitOfWorkDbContext(
+        public MyWishesUnitOfWorkDbContext(
             MyWishesDbContext dbContext,
             IRepository<AppTenant> tenantsRepository, 
             IRepository<WishDay> wishDaysRepository, 
@@ -44,10 +45,10 @@ namespace MyNotes.Web.Repositories
 
         public void Delete(object id)
         {
-            var item = _dbContext.Set<T>().Where(i => i.Id.Equals(id));
+            var item = _dbContext.Set<T>().FirstOrDefault(i => i.Id.Equals(id));
             if (item != null)
             {
-                Delete(item);
+                _dbContext.Set<T>().Remove(item);
             }
         }
 
@@ -76,4 +77,17 @@ namespace MyNotes.Web.Repositories
             throw new NotImplementedException();
         }
     }
+
+    public static class MyWishesUnitOfWorkDbContextExtensions
+    {
+        public static void AddMyWishesDbContext(this IServiceCollection services)
+        {
+            services.AddTransient<IRepository<AppTenant>, DbRepository<AppTenant, string>>();
+            services.AddTransient<IRepository<WishDay>, DbRepository<WishDay, int>>();
+            services.AddTransient<IRepository<WishItem>, DbRepository<WishItem, int>>();
+            services.AddTransient<IRepository<WishItemTag>, DbRepository<WishItemTag, int>>();
+            services.AddTransient<IUnitOfWorkContext, MyWishesUnitOfWorkDbContext>();
+        }
+    }
+
 }

@@ -1,4 +1,5 @@
-﻿using MyNotes.Web.Models;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MyNotes.Web.Models;
 using MyNotes.Web.MultiTenancy;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace MyNotes.Web.Repositories
 {
- 
     public class MyWishesUnitOfWorkInMemoryContext : MyWishesUnitOfWorkContextBase
     {
         public MyWishesUnitOfWorkInMemoryContext(
@@ -74,6 +74,18 @@ namespace MyNotes.Web.Repositories
         public void Update(T entity)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    public static class MyWishesUnitOfWorkInMemoryContextExtensions
+    {
+        public static void AddMyWishesInMemoryContext(this IServiceCollection services)
+        {
+            services.AddSingleton<IRepository<AppTenant>, InMemoryRepository<AppTenant, string>>();
+            services.AddSingleton<IRepository<WishDay>, InMemoryRepository<WishDay, int>>();
+            services.AddSingleton<IRepository<WishItem>, InMemoryRepository<WishItem, int>>();
+            services.AddSingleton<IRepository<WishItemTag>, InMemoryRepository<WishItemTag, int>>();
+            services.AddSingleton<IUnitOfWorkContext, MyWishesUnitOfWorkInMemoryContext>();
         }
     }
 }

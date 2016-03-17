@@ -29,12 +29,14 @@ namespace MyNotes.Web.Services
         {
             try
             {
-                var item = _dbContext.WishItemsRepository.Query(n => n.Id == id).FirstOrDefault();
-                if (item != null)
-                {
-                    _dbContext.WishItemsRepository.Delete(item);
-                    await _dbContext.SaveChangesAsync();
-                }
+                _dbContext.WishItemsRepository.Delete(id);
+                await _dbContext.SaveChangesAsync();
+                //var item = _dbContext.WishItemsRepository.Query(n => n.Id == id).FirstOrDefault();
+                //if (item != null)
+                //{
+                //    _dbContext.WishItemsRepository.Delete(item);
+                //    await _dbContext.SaveChangesAsync();
+                //}
                 return ActionResult.Success();
             }
             catch (Exception ex)
