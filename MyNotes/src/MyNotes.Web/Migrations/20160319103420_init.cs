@@ -5,7 +5,7 @@ using Microsoft.Data.Entity.Metadata;
 
 namespace MyNotes.Web.Migrations
 {
-    public partial class FirstMigration : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

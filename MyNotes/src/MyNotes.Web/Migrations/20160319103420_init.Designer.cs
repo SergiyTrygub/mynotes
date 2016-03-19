@@ -8,8 +8,8 @@ using MyNotes.Web.Repositories;
 namespace MyNotes.Web.Migrations
 {
     [DbContext(typeof(MyWishesDbContext))]
-    [Migration("20160316194056_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20160319103420_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,7 +32,8 @@ namespace MyNotes.Web.Migrations
                         .IsRequired();
 
                     b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("Id");
                 });
@@ -52,7 +53,8 @@ namespace MyNotes.Web.Migrations
                         .IsRequired();
 
                     b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<int>("WishDayId");
 
@@ -70,7 +72,8 @@ namespace MyNotes.Web.Migrations
                         .IsRequired();
 
                     b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<int>("WishItemId");
 
@@ -90,7 +93,8 @@ namespace MyNotes.Web.Migrations
                     b.Property<bool>("IsPrivate");
 
                     b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("Id");
                 });

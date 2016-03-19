@@ -2,6 +2,7 @@ using System;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
+using Microsoft.Data.Entity.Migrations;
 using MyNotes.Web.Repositories;
 
 namespace MyNotes.Web.Migrations
@@ -30,7 +31,8 @@ namespace MyNotes.Web.Migrations
                         .IsRequired();
 
                     b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("Id");
                 });
@@ -50,7 +52,8 @@ namespace MyNotes.Web.Migrations
                         .IsRequired();
 
                     b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<int>("WishDayId");
 
@@ -68,7 +71,8 @@ namespace MyNotes.Web.Migrations
                         .IsRequired();
 
                     b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<int>("WishItemId");
 
@@ -88,7 +92,8 @@ namespace MyNotes.Web.Migrations
                     b.Property<bool>("IsPrivate");
 
                     b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("Id");
                 });

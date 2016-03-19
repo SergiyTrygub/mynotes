@@ -24,6 +24,7 @@ namespace MyNotes.Web.Repositories
                 .HasKey(k => k.Id);
             modelBuilder.Entity<AppTenant>()
                 .Property(p => p.Timestamp)
+                .ValueGeneratedOnAddOrUpdate()
                 .IsConcurrencyToken();
 
             modelBuilder.Entity<WishDay>()
@@ -34,6 +35,7 @@ namespace MyNotes.Web.Repositories
                 .IsRequired();
             modelBuilder.Entity<WishDay>()
                 .Property(p => p.Timestamp)
+                .ValueGeneratedOnAddOrUpdate()
                 .IsConcurrencyToken();
 
             modelBuilder.Entity<WishItem>()
@@ -50,6 +52,7 @@ namespace MyNotes.Web.Repositories
                 .IsRequired();
             modelBuilder.Entity<WishItem>()
                 .Property(p => p.Timestamp)
+                .ValueGeneratedOnAddOrUpdate()
                 .IsConcurrencyToken();
 
             modelBuilder.Entity<WishItem>()
@@ -66,6 +69,7 @@ namespace MyNotes.Web.Repositories
                 .IsRequired();
             modelBuilder.Entity<WishItemTag>()
                 .Property(p => p.Timestamp)
+                .ValueGeneratedOnAddOrUpdate()
                 .IsConcurrencyToken();
 
             //modelBuilder.Entity<WishItemTag>()
