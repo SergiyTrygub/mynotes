@@ -86,7 +86,7 @@ li .edit {
 
 li.editing .edit {
 	display: block;
-	width: 506px;
+	/*width: 506px;*/
 	padding: 13px 17px 12px 17px;
 	margin: 0 0 0 43px;
 }

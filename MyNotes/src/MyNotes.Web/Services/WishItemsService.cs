@@ -73,7 +73,7 @@ namespace MyNotes.Web.Services
             }
             catch (Exception ex)
             {
-                return ActionResult.Failed();
+                return ActionResult.Failed(ex);
             }
         }
 

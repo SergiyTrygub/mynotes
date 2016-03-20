@@ -108,6 +108,13 @@ System.register(['angular2/core', 'angular2/router', './../wishlist/wishitem.com
                         });
                     }, function (error) { return _this.errorMessage = error; });
                 };
+                WishListComponent.prototype.updateItem = function (item) {
+                    var _this = this;
+                    this._wishItemsService.saveWishItem(item)
+                        .subscribe(function (item) {
+                        _this.ngOnInit();
+                    }, function (error) { return _this.errorMessage = error; });
+                };
                 WishListComponent.prototype.gotoDay = function (tenant, date) {
                     var dateString = (date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2));
                     var link = ['WishDay', { tenant: tenant, date: dateString }];

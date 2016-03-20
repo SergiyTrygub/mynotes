@@ -1,8 +1,8 @@
 ﻿<section>
     {{errorMessage}}
-    <!--<header *ngIf="!currentWishDay">
-        <button (click)="createNewDay()">Create new day</button>
-    </header>-->
+    <header *ngIf="!currentWishDay">
+        No records found
+    </header>
     <header *ngIf="currentWishDay">
         <h1 >{{currentWishDay.date}}</h1>
         <input class="new-todo" placeholder="What needs to be done?" autofocus
@@ -14,7 +14,8 @@
             <wish-item 
                        *ngFor="#item of currentWishDay.wishList" 
                        [item]="item"
-                       (onWishItemRemove)="removeItem($event)">
+                       (onWishItemRemove)="removeItem($event)"
+                       (onWishItemUpdated)="updateItem($event)">>
             </wish-item>
             <!--<todo-item *ngFor="#item of WishItems"
                        [item]="item"

@@ -101,6 +101,13 @@ export class WishListComponent implements OnInit {
             error => this.errorMessage = <any>error);
     }
 
+    updateItem(item: WishItem) {
+        this._wishItemsService.saveWishItem(item)
+            .subscribe(item => {
+                this.ngOnInit();
+            }, error => this.errorMessage = <any>error);
+    }
+
     private gotoDay(tenant: string, date: Date) {        
         var dateString = (date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2));
         let link = ['WishDay', { tenant: tenant, date: dateString }];

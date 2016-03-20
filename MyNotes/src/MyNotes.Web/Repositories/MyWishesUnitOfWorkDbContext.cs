@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MyNotes.Web.Models;
 using MyNotes.Web.MultiTenancy;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace MyNotes.Web.Repositories
 {
@@ -74,7 +75,30 @@ namespace MyNotes.Web.Repositories
 
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+                return ;
+
+            T existing = _dbContext.Set<T>().SingleOrDefault(i => i.Id.Equals(entity.Id));
+            if (existing != null)
+            {
+                var dbProps = _dbContext.Entry(existing).Metadata.GetProperties();
+                foreach(var dbp in dbProps)
+                {
+                    var p = entity.GetType().GetTypeInfo().GetDeclaredProperty(dbp.Name);
+                    if (p!= null)
+                    {
+                        var newVal = p.GetValue(entity);
+                        if (_dbContext.Entry(existing).Property(dbp.Name) != null &&
+                            _dbContext.Entry(existing).Property(dbp.Name).CurrentValue != null && 
+                            !_dbContext.Entry(existing).Property(dbp.Name).CurrentValue.Equals(newVal))
+                        {
+                            _dbContext.Entry(existing).Property(p.Name).CurrentValue = newVal;
+                            _dbContext.Entry(existing).Property(p.Name).IsModified = true;
+                            _dbContext.Entry(existing).State = Microsoft.Data.Entity.EntityState.Modified;
+                        }
+                    }
+                }
+            }
         }
     }
 

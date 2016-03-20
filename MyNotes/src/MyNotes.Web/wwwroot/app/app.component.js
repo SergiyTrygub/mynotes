@@ -29,7 +29,8 @@ System.register(['angular2/core', 'angular2/router', './wishlist/wishlist.compon
                     core_1.Component({
                         selector: 'wish-day',
                         templateUrl: '/views/mywishday.html',
-                        directives: [wishlist_component_1.WishListComponent, router_1.ROUTER_DIRECTIVES]
+                        directives: [wishlist_component_1.WishListComponent, router_1.ROUTER_DIRECTIVES],
+                        encapsulation: core_1.ViewEncapsulation.Native
                     }),
                     router_1.RouteConfig([
                         {

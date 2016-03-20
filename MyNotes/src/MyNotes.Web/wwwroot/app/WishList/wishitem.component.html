@@ -1,6 +1,11 @@
-﻿<li >
+﻿<li [class.editing]="editMode" [class.completed]="item.completed">
     <div class="view">
-        <label>{{item.text}}</label>
+        <label (dblclick)="enterEditMode(todoItemInput)">{{item.text}}</label>
         <button (click)="removeWishItemClicked()" class="destroy"></button>
     </div>
+    <input class="edit" [value]="item.text"
+        #todoItemInput
+        (keyup.enter)="commitEdit(todoItemInput.value)"
+        (keyup.escape)="cancelEdit(todoItemInput)"
+        (blur)="commitEdit(todoItemInput.value)" />
 </li>

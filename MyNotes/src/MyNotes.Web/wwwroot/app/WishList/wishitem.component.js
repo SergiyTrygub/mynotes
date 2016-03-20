@@ -18,10 +18,32 @@ System.register(['angular2/core'], function(exports_1) {
         execute: function() {
             WishItemComponent = (function () {
                 function WishItemComponent() {
+                    this.editMode = false;
                     this.onWishItemRemove = new core_1.EventEmitter();
+                    this.onWishItemUpdated = new core_1.EventEmitter();
                 }
                 WishItemComponent.prototype.removeWishItemClicked = function () {
                     this.onWishItemRemove.emit(this.item.id);
+                };
+                WishItemComponent.prototype.enterEditMode = function (element) {
+                    console.log('edit');
+                    this.editMode = true;
+                    if (this.editMode) {
+                        setTimeout(function () { element.focus(); }, 0);
+                    }
+                };
+                WishItemComponent.prototype.cancelEdit = function (element) {
+                    this.editMode = false;
+                    element.value = this.item.text;
+                };
+                WishItemComponent.prototype.commitEdit = function (updatedText) {
+                    this.editMode = false;
+                    this.onWishItemUpdated.emit({
+                        id: this.item.id,
+                        position: this.item.position,
+                        wishDayId: this.item.wishDayId,
+                        text: updatedText
+                    });
                 };
                 __decorate([
                     core_1.Input(), 
@@ -31,11 +53,16 @@ System.register(['angular2/core'], function(exports_1) {
                     core_1.Output(), 
                     __metadata('design:type', Object)
                 ], WishItemComponent.prototype, "onWishItemRemove", void 0);
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', Object)
+                ], WishItemComponent.prototype, "onWishItemUpdated", void 0);
                 WishItemComponent = __decorate([
                     core_1.Component({
                         selector: 'wish-item',
                         templateUrl: 'app/wishlist/wishitem.component.html',
                         styleUrls: ['app/wishlist/wishitem.component.css'],
+                        encapsulation: core_1.ViewEncapsulation.Native
                     }), 
                     __metadata('design:paramtypes', [])
                 ], WishItemComponent);
