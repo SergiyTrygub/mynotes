@@ -1,4 +1,5 @@
-﻿using MyNotes.Web.Infrastructure;
+﻿using Microsoft.Data.Entity;
+using MyNotes.Web.Infrastructure;
 using MyNotes.Web.Models;
 using MyNotes.Web.Repositories;
 using System;
@@ -45,12 +46,12 @@ namespace MyNotes.Web.Services
 
         public async Task<IEnumerable<WishDay>> GetAsync(string tenantId)
         {
-            return Query().Where(n => n.TenantId == tenantId);
+            return _dbContext.WishDaysRepository.Query().Include(w => w.WishList).Where(n => n.TenantId == tenantId);
         }
 
         public async Task<WishDay> GetWishDayAsync(string tenantId, DateTime date)
         {
-            return Query().FirstOrDefault(n => n.Date == date);
+            return await _dbContext.WishDaysRepository.Query().Include(w => w.WishList).FirstOrDefaultAsync(n => n.Date.Date == date.Date);
         }
 
         public async Task<ActionResult> SaveAsync(string tenantId, WishDay wishDay)
@@ -75,11 +76,6 @@ namespace MyNotes.Web.Services
             {
                 return ActionResult.Failed();
             }
-        }
-
-        private IEnumerable<WishDay> Query()
-        {
-            return _dbContext.WishDaysRepository.Query(n => !n.IsDeleted);
         }
     }
 }

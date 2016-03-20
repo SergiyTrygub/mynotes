@@ -1,4 +1,4 @@
-System.register(['angular2/core', './wishlist/wishlist.component'], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', './wishlist/wishlist.component'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,12 +8,15 @@ System.register(['angular2/core', './wishlist/wishlist.component'], function(exp
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, wishlist_component_1;
+    var core_1, router_1, wishlist_component_1;
     var AppComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (router_1_1) {
+                router_1 = router_1_1;
             },
             function (wishlist_component_1_1) {
                 wishlist_component_1 = wishlist_component_1_1;
@@ -26,8 +29,21 @@ System.register(['angular2/core', './wishlist/wishlist.component'], function(exp
                     core_1.Component({
                         selector: 'wish-day',
                         templateUrl: '/views/mywishday.html',
-                        directives: [wishlist_component_1.WishListComponent]
-                    }), 
+                        directives: [wishlist_component_1.WishListComponent, router_1.ROUTER_DIRECTIVES]
+                    }),
+                    router_1.RouteConfig([
+                        {
+                            path: ':tenant',
+                            name: 'DefaultWishDay',
+                            component: wishlist_component_1.WishListComponent,
+                            useAsDefault: true
+                        },
+                        {
+                            path: ':tenant/wishday/:date',
+                            name: 'WishDay',
+                            component: wishlist_component_1.WishListComponent
+                        }
+                    ]), 
                     __metadata('design:paramtypes', [])
                 ], AppComponent);
                 return AppComponent;

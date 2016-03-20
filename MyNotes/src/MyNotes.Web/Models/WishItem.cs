@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace MyNotes.Web.Models
 
         public int WishDayId { get; set; }
 
+        [JsonIgnore]
         public WishDay WishDay { get; set; }
 
         public string Text { get; set; }

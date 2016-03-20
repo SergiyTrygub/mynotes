@@ -35,6 +35,18 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                         .do(function (data) { return console.log(data); })
                         .catch(this.handleError);
                 };
+                WishDaysService.prototype.getWishDay = function (tenantId, date) {
+                    var url = this._apiUrl + '/' + tenantId + '/' + (date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2));
+                    console.log(url);
+                    return this.http.get(url)
+                        .map(function (res) { return res.json(); })
+                        .do(function (data) {
+                        if (!data.wishList) {
+                            data.wishList = [];
+                        }
+                    })
+                        .catch(this.handleError);
+                };
                 WishDaysService.prototype.createNewDay = function (tenantId) {
                     var url = this._apiUrl + tenantId;
                     console.log("createNewDay", url);

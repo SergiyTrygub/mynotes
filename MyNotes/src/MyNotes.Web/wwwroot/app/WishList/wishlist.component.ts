@@ -1,5 +1,6 @@
 ﻿import {Component, Input} from 'angular2/core';
 import {OnInit} from 'angular2/core';
+import {Router, RouteParams} from 'angular2/router';
 import {WishDay} from './../wishlist/wishday.model';
 import {WishItem} from './../wishlist/wishitem';
 import {WishItemComponent} from './../wishlist/wishitem.component'
@@ -14,6 +15,8 @@ import {WishItemsService} from './../services/wishitems.service';
 })
 export class WishListComponent implements OnInit {
     constructor(
+        private _router: Router,
+        private _routeParams: RouteParams,
         private _wishItemsService: WishItemsService,
         private _wishDaysService: WishDaysService) {
     }
@@ -29,24 +32,43 @@ export class WishListComponent implements OnInit {
         wishDayId: 0
     };
 
-    //getwishItems() {
-    //    var tenantId = window.location.pathname;
-    //    this._wishItemsService.getItems(tenantId)
-    //        .subscribe(items => this.currentWishDay.wishList = items);
-    //}
-
     createNewDay() {
-        var tenantId = window.location.pathname;
-        this._wishDaysService.createNewDay(tenantId)
+        let tenantRouteParam = this._routeParams.get('tenant');
+        this._wishDaysService.createNewDay(tenantRouteParam)
             .subscribe(day => {
-                this.currentWishDay = day;
-                this.currentWishDay.wishList = [];
+                this.currentWishDay = {
+                    id: day.id,
+                    date: new Date(day.date.toString()),
+                    wishList: []
+                };
+
+                this.gotoDay(tenantRouteParam, new Date(day.date.toString()));
             },
             error => this.errorMessage = <any>error);
     }
 
     ngOnInit() {
-        //this.getwishItems();
+        let tenantRouteParam = this._routeParams.get('tenant');
+        let dateParameter = this._routeParams.get('date');
+        if (dateParameter && dateParameter != null) {
+            this._wishDaysService.getWishDay(tenantRouteParam, new Date(dateParameter))
+                .subscribe(day => {
+                    console.log(day);
+                    this.currentWishDay = day;
+                });
+        } else {
+            this._wishDaysService.getWishDay(tenantRouteParam, new Date())
+                .subscribe(day => {
+                    console.log(day);
+                    this.currentWishDay = day;
+
+                    if (!this.currentWishDay) {
+                        this.createNewDay();
+                    } else {
+                        this.gotoDay(tenantRouteParam, new Date(day.date.toString()));
+                    }
+                });
+        }
     }
 
     addItem() {
@@ -58,7 +80,7 @@ export class WishListComponent implements OnInit {
                 id: 0,
                 wishDayId: this.currentWishDay.id
             };
-            var tenantId = window.location.pathname;
+
             this._wishItemsService.saveWishItem(newItem)
                 .subscribe(item => {
                     this.currentWishDay.wishList.push(item);
@@ -78,4 +100,10 @@ export class WishListComponent implements OnInit {
             },
             error => this.errorMessage = <any>error);
     }
+
+    private gotoDay(tenant: string, date: Date) {        
+        var dateString = (date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2));
+        let link = ['WishDay', { tenant: tenant, date: dateString }];
+        this._router.navigate(link);
+   }
 }

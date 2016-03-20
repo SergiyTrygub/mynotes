@@ -89,7 +89,7 @@ namespace MyNotes.Web
             }
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
-
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseMultiTenancy();
@@ -105,6 +105,9 @@ namespace MyNotes.Web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                // 404 routingfor SPA
+                routes.MapRoute("spa-fallback", "{*anything}", new { controller = "Notes", action = "Index" });
             });
 
             if (env.IsDevelopment())

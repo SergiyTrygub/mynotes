@@ -1,8 +1,8 @@
 ﻿<section>
     {{errorMessage}}
-    <header *ngIf="!currentWishDay">
+    <!--<header *ngIf="!currentWishDay">
         <button (click)="createNewDay()">Create new day</button>
-    </header>
+    </header>-->
     <header *ngIf="currentWishDay">
         <h1 >{{currentWishDay.date}}</h1>
         <input class="new-todo" placeholder="What needs to be done?" autofocus

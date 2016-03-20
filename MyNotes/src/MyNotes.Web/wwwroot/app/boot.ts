@@ -5,5 +5,6 @@ import {AppComponent} from './app.component'
 import {WishItemsService} from './services/wishitems.service';
 import {WishDaysService} from './services/wishdays.service';
 import 'rxjs/Rx';
+import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 
-bootstrap(AppComponent, [HTTP_PROVIDERS, WishDaysService, WishItemsService]);
+bootstrap(AppComponent, [ROUTER_PROVIDERS, HTTP_PROVIDERS, WishDaysService, WishItemsService]);
