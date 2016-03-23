@@ -22,26 +22,35 @@ export class WishDaysService {
         var url = this._apiUrl + '/' + tenantId + '/' + (date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2));
         console.log(url);
         return this.http.get(url)
-            .map(res => <WishDay>res.json())
-            .do(data => {
-                if (!data.wishList) {
-                    data.wishList = [];
+            .map(res =>
+                <WishDay>res.json()
+                )
+            .do(day => {
+                if (day) {
+                    if (!day.wishList) {
+                        day.wishList = [];
+                    }
+                    day.date = new Date(day.date.toString());
                 }
             })
             .catch(this.handleError);
     }
 
     createNewDay(tenantId: string): Observable<WishDay> {
-        var url = this._apiUrl + tenantId;
+        var url = this._apiUrl + '/' + tenantId;
         console.log("createNewDay", url);
+        var d = new Date();
+        d.setDate(d.getDate() + 1);
 
-        let body = JSON.stringify({ id: 0, date: new Date() });
+        let body = JSON.stringify({ id: 0, date: d});
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
 
         return this.http.post(url, body, options)
             .map(res => <WishDay>res.json().item)
-            .do(item => console.log(item))
+            .do(item => {
+                console.log(item);
+            })
             .catch(this.handleError);
     }
 

@@ -39,23 +39,32 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                     var url = this._apiUrl + '/' + tenantId + '/' + (date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2));
                     console.log(url);
                     return this.http.get(url)
-                        .map(function (res) { return res.json(); })
-                        .do(function (data) {
-                        if (!data.wishList) {
-                            data.wishList = [];
+                        .map(function (res) {
+                        return res.json();
+                    })
+                        .do(function (day) {
+                        if (day) {
+                            if (!day.wishList) {
+                                day.wishList = [];
+                            }
+                            day.date = new Date(day.date.toString());
                         }
                     })
                         .catch(this.handleError);
                 };
                 WishDaysService.prototype.createNewDay = function (tenantId) {
-                    var url = this._apiUrl + tenantId;
+                    var url = this._apiUrl + '/' + tenantId;
                     console.log("createNewDay", url);
-                    var body = JSON.stringify({ id: 0, date: new Date() });
+                    var d = new Date();
+                    d.setDate(d.getDate() + 1);
+                    var body = JSON.stringify({ id: 0, date: d });
                     var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
                     var options = new http_1.RequestOptions({ headers: headers });
                     return this.http.post(url, body, options)
                         .map(function (res) { return res.json().item; })
-                        .do(function (item) { return console.log(item); })
+                        .do(function (item) {
+                        console.log(item);
+                    })
                         .catch(this.handleError);
                 };
                 WishDaysService.prototype.saveWishDay = function (tenantId, wishDay) {

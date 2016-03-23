@@ -4,7 +4,7 @@
         No records found
     </header>
     <header *ngIf="currentWishDay">
-        <h1 >{{currentWishDay.date}}</h1>
+        <h1>{{currentWishDay.date | date: 'dd MMMM yyyy'}}</h1>
         <input class="new-todo" placeholder="What needs to be done?" autofocus
                [(ngModel)]="newItem.text" (keyup.enter)="addItem()">
         <button class="add" (click)="addItem()">Add</button>
