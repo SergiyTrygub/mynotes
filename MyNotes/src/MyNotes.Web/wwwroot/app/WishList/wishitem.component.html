@@ -1,4 +1,5 @@
 ﻿<li [class.editing]="editMode" [class.completed]="item.completed">
+    <span class="position">{{item.position}}</span>
     <div class="view">
         <label (dblclick)="enterEditMode(todoItemInput)">{{item.text}}</label>
         <button (click)="removeWishItemClicked()" class="destroy"></button>
