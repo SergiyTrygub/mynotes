@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNet.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.OptionsModel;
-using MyNotes.Web.MultiTenancy.Resolvers;
-using MyNotes.Web.MultiTenancy.Sources;
 
 namespace MyNotes.Web.MultiTenancy
 {
@@ -20,7 +17,7 @@ namespace MyNotes.Web.MultiTenancy
                 prov.GetService<IHttpContextAccessor>()?.HttpContext?.GetTenant());
 
             // Ensure caching is available for caching resolvers
-            services.AddCaching();
+            //services.AddCaching();
 
             return services;
         }

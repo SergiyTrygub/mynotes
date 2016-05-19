@@ -1,15 +1,16 @@
-﻿using Microsoft.Data.Entity;
+﻿using Microsoft.EntityFrameworkCore;
 using MyNotes.Web.Models;
 using MyNotes.Web.MultiTenancy;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MyNotes.Web.Repositories
 {
     public class MyWishesDbContext : DbContext
     {
+        public MyWishesDbContext(DbContextOptions<MyWishesDbContext> options)
+            : base(options)
+        {
+        }
+
         public DbSet<AppTenant> Tenants { get; set; }
 
         public DbSet<WishDay> WishDays { get; set; }
@@ -59,7 +60,7 @@ namespace MyNotes.Web.Repositories
                         .HasOne(p => p.WishDay)
                         .WithMany(b => b.WishList)
                         .HasForeignKey(f => f.WishDayId)
-                        .OnDelete(Microsoft.Data.Entity.Metadata.DeleteBehavior.Cascade);
+                        .OnDelete(Microsoft.EntityFrameworkCore.Metadata.DeleteBehavior.Cascade);
 
             modelBuilder.Entity<WishItemTag>()
                 .Property(p => p.Text)

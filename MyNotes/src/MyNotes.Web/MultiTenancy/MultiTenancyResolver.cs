@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNet.Http;
-using Microsoft.Extensions.OptionsModel;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using MyNotes.Web.MultiTenancy.Resolvers;
-using MyNotes.Web.MultiTenancy.Sources;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyNotes.Web.MultiTenancy

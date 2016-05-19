@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+﻿using System.Threading.Tasks;
 using MyNotes.Web.Services;
 using MyNotes.Web.MultiTenancy;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,7 +30,7 @@ namespace MyNotes.Web.Controllers
             {
                 return Redirect("/" + ((AppTenant)result.Item).Id);
             }
-            return HttpBadRequest(result.Errors);
+            return BadRequest(result.Errors);
         }
     }
 }

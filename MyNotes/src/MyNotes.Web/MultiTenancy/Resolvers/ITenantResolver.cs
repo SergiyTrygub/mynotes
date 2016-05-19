@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNet.Http;
+﻿using Microsoft.AspNetCore.Http;
 using MyNotes.Web.MultiTenancy.Sources;
 using System.Collections.Generic;
 using System.Threading.Tasks;

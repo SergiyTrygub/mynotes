@@ -94,7 +94,7 @@ namespace MyNotes.Web.Repositories
                         {
                             _dbContext.Entry(existing).Property(p.Name).CurrentValue = newVal;
                             _dbContext.Entry(existing).Property(p.Name).IsModified = true;
-                            _dbContext.Entry(existing).State = Microsoft.Data.Entity.EntityState.Modified;
+                            _dbContext.Entry(existing).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                         }
                     }
                 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using MyNotes.Web.Services;
@@ -8,11 +6,12 @@ using Microsoft.Extensions.Logging;
 using MyNotes.Web.MultiTenancy;
 using MyNotes.Web.MultiTenancy.Resolvers;
 using MyNotes.Web.MultiTenancy.Sources;
-using Microsoft.AspNet.Mvc.Formatters;
 using Newtonsoft.Json.Serialization;
-using Glimpse;
-using Microsoft.Data.Entity;
 using MyNotes.Web.Repositories;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Builder;
 
 namespace MyNotes.Web
 {
@@ -22,7 +21,8 @@ namespace MyNotes.Web
         {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
@@ -42,12 +42,10 @@ namespace MyNotes.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddLogging();
-            services.AddGlimpse();
+            //services.AddGlimpse();
 
-            var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];
-            services.AddEntityFramework()
-                            .AddSqlServer()
-                            .AddDbContext<MyWishesDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<MyWishesDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
 
             services.AddMultitenancy<MultiTenancyResolver>().Configure<MultiTenancyOptions>(opt =>
             {
@@ -65,7 +63,7 @@ namespace MyNotes.Web
             services.AddTransient<ITenantsService, TenantsService>();
             services.AddTransient<IWishDaysService, WishDaysService>();
             services.AddTransient<IWishItemsService, WishItemsService>();
-            services.AddInstance<IUserContextService>(new FakeUserContextService(Guid.NewGuid()));
+            //services.AddTransient<IUserContextService>(new FakeUserContextService(Guid.NewGuid()));
             
         }
 
@@ -88,7 +86,7 @@ namespace MyNotes.Web
                 // For more details on creating database during deployment see http://go.microsoft.com/fwlink/?LinkID=615859
             }
 
-            app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
+            //app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
@@ -112,11 +110,8 @@ namespace MyNotes.Web
 
             if (env.IsDevelopment())
             {
-                app.UseGlimpse();
+                //app.UseGlimpse();
             }
         }
-
-        // Entry point for the application.
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
     }
 }

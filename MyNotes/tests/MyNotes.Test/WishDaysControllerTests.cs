@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyNotes.Web.Controllers.Api.v1;
@@ -61,7 +61,7 @@ namespace MyNotes.Test
 
             result = await controller.Delete(1);
             Assert.True(result != null);
-            Assert.True((result as HttpOkObjectResult) != null);
+            Assert.True((result as OkObjectResult) != null);
             
             var cnt = (await controller.Get("testtenant"))?.Count() ?? 0;
             Assert.True(cnt == 0);

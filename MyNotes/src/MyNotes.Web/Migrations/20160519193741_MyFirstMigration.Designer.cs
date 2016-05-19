@@ -1,20 +1,20 @@
-using System;
-using Microsoft.Data.Entity;
-using Microsoft.Data.Entity.Infrastructure;
-using Microsoft.Data.Entity.Metadata;
-using Microsoft.Data.Entity.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using MyNotes.Web.Repositories;
 
 namespace MyNotes.Web.Migrations
 {
     [DbContext(typeof(MyWishesDbContext))]
-    [Migration("20160319103420_init")]
-    partial class init
+    [Migration("20160519193741_MyFirstMigration")]
+    partial class MyFirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
+                .HasAnnotation("ProductVersion", "1.0.0-rc2-20901")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("MyNotes.Web.Models.WishDay", b =>
@@ -36,6 +36,8 @@ namespace MyNotes.Web.Migrations
                         .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("Id");
+
+                    b.ToTable("WishDays");
                 });
 
             modelBuilder.Entity("MyNotes.Web.Models.WishItem", b =>
@@ -59,6 +61,10 @@ namespace MyNotes.Web.Migrations
                     b.Property<int>("WishDayId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("WishDayId");
+
+                    b.ToTable("WishItems");
                 });
 
             modelBuilder.Entity("MyNotes.Web.Models.WishItemTag", b =>
@@ -78,6 +84,10 @@ namespace MyNotes.Web.Migrations
                     b.Property<int>("WishItemId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("WishItemId");
+
+                    b.ToTable("WishItemTags");
                 });
 
             modelBuilder.Entity("MyNotes.Web.MultiTenancy.AppTenant", b =>
@@ -97,20 +107,24 @@ namespace MyNotes.Web.Migrations
                         .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("Id");
+
+                    b.ToTable("Tenants");
                 });
 
             modelBuilder.Entity("MyNotes.Web.Models.WishItem", b =>
                 {
                     b.HasOne("MyNotes.Web.Models.WishDay")
                         .WithMany()
-                        .HasForeignKey("WishDayId");
+                        .HasForeignKey("WishDayId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyNotes.Web.Models.WishItemTag", b =>
                 {
                     b.HasOne("MyNotes.Web.Models.WishItem")
                         .WithMany()
-                        .HasForeignKey("WishItemId");
+                        .HasForeignKey("WishItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }

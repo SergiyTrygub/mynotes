@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
 using MyNotes.Web.Services;
-using System.Collections;
 using MyNotes.Web.Models;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -38,7 +35,7 @@ namespace MyNotes.Web.Controllers.Api.v1
             _logger.LogInformation($"Beginning POST: {item.Text}");
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             var result = await _service.SaveAsync(item);
@@ -46,7 +43,7 @@ namespace MyNotes.Web.Controllers.Api.v1
             {
                 return Created("/", result);
             }
-            return HttpBadRequest(result);
+            return BadRequest(result);
         }
 
         [HttpPut("{id}")]
@@ -55,7 +52,7 @@ namespace MyNotes.Web.Controllers.Api.v1
             _logger.LogInformation($"Beginning PUT: {item.Text}");
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
             
             var result = await _service.SaveAsync(item);
@@ -63,7 +60,7 @@ namespace MyNotes.Web.Controllers.Api.v1
             {
                 return Ok(result);
             }
-            return HttpBadRequest(result);
+            return BadRequest(result);
         }
 
         // DELETE api/values/5
@@ -75,7 +72,7 @@ namespace MyNotes.Web.Controllers.Api.v1
             {
                 return Ok(result);
             }
-            return HttpBadRequest(result);
+            return BadRequest(result);
         }
     }
 }

@@ -1,16 +1,16 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using Microsoft.Data.Entity.Migrations;
-using Microsoft.Data.Entity.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace MyNotes.Web.Migrations
 {
-    public partial class init : Migration
+    public partial class MyFirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "WishDay",
+                name: "WishDays",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -23,10 +23,11 @@ namespace MyNotes.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WishDay", x => x.Id);
+                    table.PrimaryKey("PK_WishDays", x => x.Id);
                 });
+
             migrationBuilder.CreateTable(
-                name: "AppTenant",
+                name: "Tenants",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -38,10 +39,11 @@ namespace MyNotes.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AppTenant", x => x.Id);
+                    table.PrimaryKey("PK_Tenants", x => x.Id);
                 });
+
             migrationBuilder.CreateTable(
-                name: "WishItem",
+                name: "WishItems",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -55,16 +57,17 @@ namespace MyNotes.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WishItem", x => x.Id);
+                    table.PrimaryKey("PK_WishItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WishItem_WishDay_WishDayId",
+                        name: "FK_WishItems_WishDays_WishDayId",
                         column: x => x.WishDayId,
-                        principalTable: "WishDay",
+                        principalTable: "WishDays",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
             migrationBuilder.CreateTable(
-                name: "WishItemTag",
+                name: "WishItemTags",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -76,22 +79,39 @@ namespace MyNotes.Web.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WishItemTag", x => x.Id);
+                    table.PrimaryKey("PK_WishItemTags", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WishItemTag_WishItem_WishItemId",
+                        name: "FK_WishItemTags_WishItems_WishItemId",
                         column: x => x.WishItemId,
-                        principalTable: "WishItem",
+                        principalTable: "WishItems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WishItems_WishDayId",
+                table: "WishItems",
+                column: "WishDayId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WishItemTags_WishItemId",
+                table: "WishItemTags",
+                column: "WishItemId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable("WishItemTag");
-            migrationBuilder.DropTable("AppTenant");
-            migrationBuilder.DropTable("WishItem");
-            migrationBuilder.DropTable("WishDay");
+            migrationBuilder.DropTable(
+                name: "WishItemTags");
+
+            migrationBuilder.DropTable(
+                name: "Tenants");
+
+            migrationBuilder.DropTable(
+                name: "WishItems");
+
+            migrationBuilder.DropTable(
+                name: "WishDays");
         }
     }
 }

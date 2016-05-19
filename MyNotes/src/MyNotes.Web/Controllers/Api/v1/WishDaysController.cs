@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
 using MyNotes.Web.Services;
 using MyNotes.Web.Models;
 using System;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -48,7 +48,7 @@ namespace MyNotes.Web.Controllers.Api.v1
             _logger.LogInformation($"Beginning POST: {wishDay.Date}");
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             _logger.LogInformation("Posting new Habit with name {habitName}", wishDay.Date);
@@ -57,7 +57,7 @@ namespace MyNotes.Web.Controllers.Api.v1
             {
                 return Created("/", result);
             }
-            return HttpBadRequest(result);
+            return BadRequest(result);
         }
 
         // PUT api/values/5
@@ -67,7 +67,7 @@ namespace MyNotes.Web.Controllers.Api.v1
             _logger.LogInformation($"Beginning POST: {noteDay.Date}");
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
             _logger.LogInformation("Posting new Habit with name {habitName}", noteDay.Date);
             var result = await _service.SaveAsync(tenantId, noteDay);
@@ -75,7 +75,7 @@ namespace MyNotes.Web.Controllers.Api.v1
             {
                 return Ok(result);
             }
-            return HttpBadRequest(result);
+            return BadRequest(result);
         }
 
         // DELETE api/values/5
@@ -87,7 +87,7 @@ namespace MyNotes.Web.Controllers.Api.v1
             {
                 return Ok(result);
             }
-            return HttpBadRequest(result);
+            return BadRequest(result);
         }
     }
 }

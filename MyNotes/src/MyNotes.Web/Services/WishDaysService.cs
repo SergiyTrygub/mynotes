@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.Entity;
+﻿using Microsoft.EntityFrameworkCore;
 using MyNotes.Web.Infrastructure;
 using MyNotes.Web.Models;
 using MyNotes.Web.Repositories;
