@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyNotes.Web.Controllers.Api.v1;
 using MyNotes.Web.Models;
+using MyNotes.Web.MultiTenancy;
 using MyNotes.Web.Repositories;
 using MyNotes.Web.Services;
 using System;
@@ -18,10 +20,20 @@ namespace MyNotes.Test
 
         public WishDaysControllerTests()
         {
+            var efServiceProvider = new ServiceCollection().AddEntityFrameworkInMemoryDatabase().BuildServiceProvider();
+
             var services = new ServiceCollection();
 
+            services.AddDbContext<MyWishesDbContext>(b => b.UseInMemoryDatabase().UseInternalServiceProvider(efServiceProvider));
+
             services.AddLogging();
-            services.AddTransient<IUnitOfWorkContext, MyWishesUnitOfWorkInMemoryContext>();
+            services.AddTransient<IRepository<AppTenant>, DbRepository<AppTenant, string>>();
+            services.AddTransient<IRepository<WishDay>, DbRepository<WishDay, int>>();
+            services.AddTransient<IRepository<WishItem>, DbRepository<WishItem, int>>();
+            services.AddTransient<IRepository<WishItemTag>, DbRepository<WishItemTag, int>>();
+            services.AddTransient<IUnitOfWorkContext, MyWishesUnitOfWorkDbContext>();
+
+            services.AddTransient<IUnitOfWorkContext, MyWishesUnitOfWorkDbContext>();
             services.AddTransient<IWishDaysService, WishDaysService>();
 
             _serviceProvider = services.BuildServiceProvider();

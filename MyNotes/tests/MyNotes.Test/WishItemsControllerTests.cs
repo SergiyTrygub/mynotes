@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyNotes.Web.Controllers.Api.v1;
 using MyNotes.Web.Models;
+using MyNotes.Web.MultiTenancy;
 using MyNotes.Web.Repositories;
 using MyNotes.Web.Services;
 using System;
@@ -20,6 +21,12 @@ namespace MyNotes.Test
             var services = new ServiceCollection();
 
             services.AddLogging();
+            services.AddTransient<IRepository<AppTenant>, InMemoryRepository<AppTenant, string>>();
+            services.AddTransient<IRepository<WishDay>, InMemoryRepository<WishDay, int>>();
+            services.AddTransient<IRepository<WishItem>, InMemoryRepository<WishItem, int>>();
+            services.AddTransient<IRepository<WishItemTag>, InMemoryRepository<WishItemTag, int>>();
+            services.AddTransient<IUnitOfWorkContext, MyWishesUnitOfWorkDbContext>();
+
             services.AddTransient<IUnitOfWorkContext, MyWishesUnitOfWorkInMemoryContext>();
             services.AddTransient<IWishItemsService, WishItemsService>();
 
